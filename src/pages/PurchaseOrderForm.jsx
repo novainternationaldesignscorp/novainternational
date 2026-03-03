@@ -39,12 +39,20 @@ export default function PurchaseOrderForm({ items }) {
     if (source && source.length > 0) {
       setOrderItems(
         source.map((item) => ({
-          styleNo: item.productId || item.styleNo,
+          productId: item.productId || item.styleNo,
+          styleNo: item.styleNo || item.productId,
+          name: item.name || item.description || "",
           description: item.name || item.description,
           color: item.color || "",
           size: item.size || "",
           qty: item.quantity ?? item.qty ?? 0,
           price: item.price || 0,
+          image:
+            item.image ||
+            item.imageUrl ||
+            item.thumbnail ||
+            item.images?.[0] ||
+            null,
           total: (item.quantity ?? item.qty ?? 0) * (item.price || 0),
         }))
       );

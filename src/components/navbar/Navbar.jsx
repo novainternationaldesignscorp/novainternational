@@ -12,6 +12,7 @@ const Navbar = () => {
   const { guest, endGuestSession } = useGuest();  // Get guest context
   const { poItems } = usePO();
   const [activeMenu, setActiveMenu] = useState(null);  // Manage active menu item state
+  const [forceHide, setForceHide] = useState(false);
 
   if (loading) return null;  // Return null while the loading state is true
 
@@ -67,38 +68,38 @@ const Navbar = () => {
         {
           heading: "Vacuum Sealers >",
           links: [
-            { title: "Zip Lock Vacuum Sealers", path: "/product/698f8b73e919b26009cf49c9" },
-            { title: "Kitchenware Vacuum Sealers", path: "/product/698f8b73e919b26009cf49ca" },
-            { title: "Technologically Advance Vacuum Sealers", path: "/product/698f8b73e919b26009cf49cb" },
+            { title: "Zip Lock Vacuum Sealers", path: "/product/zip-lock-vacuum-sealers" },
+            { title: "Kitchenware Vacuum Sealers", path: "/product/kitchenware-vacuum-sealers" },
+            { title: "Technologically Advance Vacuum Sealers", path: "/product/technologically-advance-vacuum-sealers" },
           ],
         },
         {
           heading: "Speakers & Audio >",
           links: [
-            { title: "Bluetooth & Wireless Speakers", path: "/product/698f8b73e919b26009cf49cf" },
-            { title: "Campfire Bluetooth Speakers", path: "/product/698f8b73e919b26009cf49d0" },
-            { title: "Technologically Advanced Bluetooth Speakers", path: "/product/698f8b73e919b26009cf49d1" },
+            { title: "Bluetooth & Wireless Speakers", path: "/product/bluetooth-wireless-speakers" },
+            { title: "Campfire Bluetooth Speakers", path: "/product/campfire-bluetooth-speakers" },
+            { title: "Technologically Advanced Bluetooth Speakers", path: "/product/technologically-advanced-bluetooth-speakers" },
           ],
         },
         {
           heading: "Fans >",
           links: [
-            { title: "Technologically Advanced Fans", path: "/product/698f8b73e919b26009cf49e3" },
-            { title: "Bladeless Fans", path: "/product/698f8b73e919b26009cf49e2" },
-            { title: "Musical Fans", path: "/product/698f8b73e919b26009cf49e4" },
+            { title: "Technologically Advanced Fans", path: "/product/technologically-advanced-fans" },
+            { title: "Bladeless Fans", path: "/product/bladeless-fan" },
+            { title: "Musical Fans", path: "/product/musical-fans" },
           ],
         },
         {
           heading: "Digital Photo Frames >",
           links: [
-            { title: "Digital Photo Frames", path: "/product/698f8b73e919b26009cf49cc" },
+            { title: "Digital Photo Frames", path: "/product/digital-photo-frame" },
           ],
         },
         {
           heading: "Kids Tech and Electronics >",
           links: [
-            { title: "Kids Robot", path: "/product/698f8b73e919b26009cf49c6" },
-            { title: "Technologically Advanced Robots", path: "/product/698f8b73e919b26009cf49c7" },
+            { title: "Kids Robot", path: "/product/kids-robot" },
+            { title: "Technologically Advanced Robots", path: "/product/technologically-advanced-robots" },
           ],
         },
         {
@@ -119,7 +120,7 @@ const Navbar = () => {
         {
           heading: "Bags And Accessories >",
           links: [
-            { title: "Jute Bags", path: "/product/698e59824dc3e3356cb8a3be" },
+            { title: "Jute Bags", path: "/product/jute-bag" },
             { title: "Evening Designer Bags", path: "/category/accessories/clutch" },
             { title: "Designer Bags", path: "/category/accessories" },
           ],
@@ -201,6 +202,9 @@ const Navbar = () => {
                     <span className="cart-count">{poItems?.length || 0}</span>
                   </Link>
                 </li>
+                <li>
+                  <Link to="/purchase-history">Purchase History</Link>
+                </li>
               </>
             )}
           </ul>
@@ -225,14 +229,22 @@ const Navbar = () => {
               <Link to={menu.path} className="menu-title">{menu.title}</Link>
 
               {/* Mega Menu (will show when hovering on the menu item) */}
-              <div className={`mega-menu ${activeMenu === i ? "show" : ""}`}>
+              <div className={`mega-menu ${activeMenu === i ? "show" : ""} ${forceHide ? "force-hidden" : ""}`}>
                 {menu.megaMenu.map((section, idx) => (
                   <div key={idx} className="mega-section">
                     <h4>{section.heading}</h4>
                     <ul>
                       {section.links.map((link, k) => (
                         <li key={k}>
-                          <Link to={link.path} onClick={() => setActiveMenu(null)}>
+                          <Link
+                            to={link.path}
+                            onClick={() => {
+                              // Immediately hide mega menu when a submenu is clicked
+                              setActiveMenu(null);
+                              setForceHide(true);
+                              setTimeout(() => setForceHide(false), 300);
+                            }}
+                          >
                             {link.title}
                           </Link>
                         </li>

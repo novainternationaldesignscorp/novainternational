@@ -11,6 +11,17 @@ export const PurchaseOrderProvider = ({ children }) => {
   const { guest } = useGuest();
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const mapDraftItems = (source) =>
+    (source || []).map((i) => ({
+      productId: i.productId,
+      name: i.name,
+      price: i.price,
+      quantity: i.qty ?? i.quantity ?? 0,
+      color: i.color || null,
+      size: i.size || null,
+      image: i.image || null,
+    }));
+
   // Load from server (when logged in or guest) or from localStorage
   useEffect(() => {
     const load = async () => {
@@ -35,14 +46,7 @@ export const PurchaseOrderProvider = ({ children }) => {
           if (res.ok) {
             const data = await res.json();
             if (data.purchaseOrderId) setPurchaseOrderId(data.purchaseOrderId);
-            const items = (data.items || []).map((i) => ({
-              productId: i.productId,
-              name: i.name,
-              price: i.price,
-              quantity: i.qty ?? i.quantity ?? 0,
-              color: i.color || null,
-              size: i.size || null,
-            }));
+            const items = mapDraftItems(data.items);
             setPoItems(items);
             return;
           }
@@ -51,18 +55,14 @@ export const PurchaseOrderProvider = ({ children }) => {
         }
       }
 
-      // Fall back to localStorage
-      const saved = localStorage.getItem("poItems");
-      if (saved) setPoItems(JSON.parse(saved));
+      // If no server draft found and no owner, start with empty PO items
+      // (do not persist to localStorage in testing/production)
     };
 
     load();
   }, [user, guest]);
 
-  // Save to localStorage
-  useEffect(() => {
-    localStorage.setItem("poItems", JSON.stringify(poItems));
-  }, [poItems]);
+  // Do not persist PO items in localStorage; server-side drafts are used when available.
 
   const addToPO = (item) => {
     setPoItems((prev) => {
@@ -130,16 +130,9 @@ export const PurchaseOrderProvider = ({ children }) => {
         }
 
         const data = await res.json();
-        const items = (data.po?.items || data.po || []).map((i) => ({
-          productId: i.productId,
-          name: i.name,
-          price: i.price,
-          quantity: i.qty ?? i.quantity ?? 0,
-          color: i.color || null,
-          size: i.size || null,
-        }));
+        const items = mapDraftItems(data.po?.items || data.po);
         setPoItems(items);
-        return;
+        return items;
       } catch (err) {
         console.error("Error removing item from server PO:", err);
         // fall through to local-only removal
@@ -156,6 +149,58 @@ export const PurchaseOrderProvider = ({ children }) => {
         (p) => !(p.productId === id && (color ? p.color === color : true) && (size ? p.size === size : true))
       );
     });
+
+    return null;
+  };
+
+  const updatePOItemQty = async ({ productId, color = null, size = null, qty }) => {
+    if (!productId) throw new Error("productId is required");
+
+    const numericQty = Math.max(1, Number(qty) || 1);
+
+    let ownerType, ownerId;
+    if (user && user._id) {
+      ownerType = "User";
+      ownerId = user._id;
+    } else if (guest && guest._id) {
+      ownerType = "Guest";
+      ownerId = guest._id;
+    }
+
+    const endpoint = ownerType && ownerId
+      ? `${API_URL}/api/purchaseOrderDraft/${ownerType}/${ownerId}/items`
+      : null;
+
+    if (endpoint) {
+      const res = await fetch(endpoint, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ productId, color, size, qty: numericQty }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || err.message || "Failed to update item quantity");
+      }
+
+      const data = await res.json();
+      const items = mapDraftItems(data.po?.items || data.po);
+      setPoItems(items);
+      return items;
+    }
+
+    setPoItems((prev) =>
+      prev.map((item) =>
+        item.productId === productId &&
+        (item.color || null) === (color || null) &&
+        (item.size || null) === (size || null)
+          ? { ...item, quantity: numericQty }
+          : item
+      )
+    );
+
+    return null;
   };
 
   const clearPO = async () => {
@@ -199,7 +244,7 @@ export const PurchaseOrderProvider = ({ children }) => {
   };
 
   return (
-    <POContext.Provider value={{ poItems, purchaseOrderId, setPurchaseOrderId, addToPO, removeFromPO, clearPO }}>
+    <POContext.Provider value={{ poItems, purchaseOrderId, setPurchaseOrderId, addToPO, removeFromPO, updatePOItemQty, clearPO }}>
       {children}
     </POContext.Provider>
   );

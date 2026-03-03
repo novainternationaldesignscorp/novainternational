@@ -9,21 +9,19 @@ export const AuthProvider = ({ children }) => {
 
   // Load user from localStorage when app starts
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) setUser(JSON.parse(savedUser));
+    // Do not persist user in localStorage for testing/production.
+    // Authentication is handled by `UserContext` which fetches session from the server.
   }, []);
 
   // Login function
   const login = (email) => {
     const userData = { email }; // you can add more info like name, id, token
     setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   // Logout function
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("user");
   };
 
   // The value we pass to context consumers

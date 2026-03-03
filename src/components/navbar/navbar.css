@@ -9,7 +9,7 @@
   margin: 0 auto;
   padding: 0 32px;
   display: flex;
-  color:red;
+  color: red;
   font-weight: bold;
 }
 
@@ -21,6 +21,7 @@
   align-items: center;
   gap: 20px;
 }
+
 .top-nav li a {
   text-decoration: none;
   color: white;
@@ -49,10 +50,10 @@
 /* .cart-icon{
   color:goldenrod;
 } */
-.cart-count{
-  color:black;
+.cart-count {
+  color: black;
   padding: 20px;
-  background-color: goldenrod ;
+  background-color: goldenrod;
 }
 
 /* Guest signout button styling */
@@ -77,7 +78,7 @@
 .menu {
   display: flex;
   list-style: none;
-  margin-left:100px;
+  margin-left: 100px;
   padding: 0;
   gap: 100px;
 }
@@ -105,7 +106,8 @@
 /* ---------------- Mega Menu ---------------- */
 .mega-menu {
   position: fixed;
-  top: 160px; /* Adjusted for top nav + main nav */
+  top: 160px;
+  /* Adjusted for top nav + main nav */
   left: 0;
   width: 100vw;
   background: #f8f8f8;
@@ -125,6 +127,15 @@
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+/* When JS forces hide (e.g., submenu clicked), ensure mega menu stays hidden */
+.mega-menu.force-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(10px) !important;
+  pointer-events: none !important;
+  transition: all 0.3s ease !important;
 }
 
 .mega-section {

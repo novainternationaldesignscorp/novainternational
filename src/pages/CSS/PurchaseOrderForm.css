@@ -1,4 +1,6 @@
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 /* ---------- Overall Container ---------- */
 .purchase-order-form {
@@ -14,12 +16,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;          /* Full width so centering works properly */
+  width: 100%;
+  /* Full width so centering works properly */
   margin-bottom: 20px;
 }
 
 .business-log-purchase img {
-  max-width: 180px;     /* Control logo size */
+  max-width: 180px;
+  /* Control logo size */
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -50,7 +54,6 @@
 }
 
 /* ---------- Form Inputs ---------- */
-.purchase-order-form input,
 .purchase-order-form textarea {
   width: 100%;
   padding: 10px;

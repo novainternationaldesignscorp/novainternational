@@ -27,7 +27,9 @@ export default function PurchaseHistory() {
           ? `${API_URL}/api/orders/user/${user._id}`
           : `${API_URL}/api/orders/guest/${guest._id}`;
 
-        const res = await fetch(endpoint);
+        const res = await fetch(endpoint, {
+          credentials: "include",
+        });
         if (!res.ok) {
           throw new Error("Failed to fetch orders");
         }

@@ -38,6 +38,7 @@ function ProductCard({ product }) {
       price: product.price,
       color: selectedColor,
       quantity: qty,
+      image: product.images?.[0] || null, // Include thumbnail image
     };
 
     console.log("Add to Purchase Order:", poItem);
@@ -53,6 +54,7 @@ function ProductCard({ product }) {
       price: product.price,
       color: selectedColor,
       quantity: qty,
+      image: product.images?.[0] || null, // Include thumbnail image
     };
 
     navigate("/checkout", { state: order });
@@ -64,10 +66,10 @@ function ProductCard({ product }) {
         src={product.images?.[0] || "/images/no-image.png"}
         alt={product.name}
         className="product-image"
-        onClick={() => navigate(`/product/${product._id}`)}
+        onClick={() => navigate(`/product/${product.slug || product._id}`)}
       />
 
-      <h3 className="product-name" onClick={() => navigate(`/product/${product._id}`)}>{product.name}</h3>
+      <h3 className="product-name" onClick={() => navigate(`/product/${product.slug || product._id}`)}>{product.name}</h3>
       <p className="price">US$ {product.price}</p>
 
     </div>

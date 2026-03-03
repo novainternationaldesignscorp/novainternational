@@ -21,10 +21,10 @@ const SignUp = () => {
 
     try {
       // 1️ Create user
-      await signUp(name, email, password);
+      const createdUser = await signUp(name, email, password);
 
-      // 2️ Fetch user context
-      await signIn();
+      // 2️ Authenticate immediately with created user
+      await signIn(createdUser);
 
       // 3️ Show success popup (server already sends welcome email)
       setShowPopup(true);

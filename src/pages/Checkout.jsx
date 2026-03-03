@@ -20,12 +20,13 @@ const Checkout = () => {
 
   const { guest, endGuestSession } = useGuest();
   const { user, loading } = useContext(UserContext);
-  const { purchaseOrderId } = usePO();
+  const { purchaseOrderId, removeFromPO, updatePOItemQty } = usePO();
 
   const { items = [], form = {} } = location.state || {};
-  const [orderData] = useState(items);
+  const [orderData, setOrderData] = useState(items);
 
   const [shippingInfo, setShippingInfo] = useState({
+    email: "",
     firstName: "",
     lastName: "",
     company: "",
@@ -37,78 +38,221 @@ const Checkout = () => {
     phone: "",
   });
 
+  const [fieldErrors, setFieldErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Wait until user loading finishes to avoid redirecting prematurely
     if (!loading) {
       if (!user && !guest) navigate("/checkout-guest");
-      if (!orderData.length) navigate("/");
+      if (!items.length) navigate("/");
     }
-  }, [user, guest, loading, navigate, orderData]);
+  }, [user, guest, loading, navigate, items]);
 
+  useEffect(() => {
+    setShippingInfo((prev) => ({
+      ...prev,
+      email: prev.email || form?.email || user?.email || guest?.email || "",
+    }));
+  }, [form, user, guest]);
+
+  // ------------------------
   // CALCULATIONS
-  const subtotal = useMemo(() => orderData.reduce((acc, item) => acc + getQty(item) * getPrice(item), 0), [orderData]);
-  const shippingCost = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FLAT;
-  const estimatedTax = (subtotal + shippingCost) * TAX_RATE;
+  // ------------------------
+  const subtotal = useMemo(
+    () => orderData.reduce((acc, item) => acc + getQty(item) * getPrice(item), 0),
+    [orderData]
+  );
+
+  const shippingCost = subtotal <= 0 ? 0 : subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FLAT;
+  const estimatedTax = subtotal <= 0 ? 0 : (subtotal + shippingCost) * TAX_RATE;
   const total = subtotal + shippingCost + estimatedTax;
+
+  // ------------------------
+  // VALIDATION
+  // ------------------------
+  const validateFields = () => {
+    const errors = {};
+
+    if (!shippingInfo.email.trim()) {
+      errors.email = "Email is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(shippingInfo.email.trim())) {
+      errors.email = "Please enter a valid email address.";
+    }
+
+    if (!shippingInfo.firstName.trim()) {
+      errors.firstName = "First name is required.";
+    } else if (!/^[a-zA-Z\s'-]{2,30}$/.test(shippingInfo.firstName)) {
+      errors.firstName = "First name must be 2–30 letters only.";
+    }
+
+    if (shippingInfo.lastName && !/^[a-zA-Z\s'-]{2,30}$/.test(shippingInfo.lastName)) {
+      errors.lastName = "Last name must be 2–30 letters only.";
+    }
+
+    if (!shippingInfo.address.trim()) {
+      errors.address = "Address is required.";
+    } else if (shippingInfo.address.length < 5) {
+      errors.address = "Address is too short.";
+    }
+
+    if (!shippingInfo.city.trim()) {
+      errors.city = "City is required.";
+    }
+
+    if (shippingInfo.state && shippingInfo.state.length < 2) {
+      errors.state = "State must be at least 2 characters.";
+    }
+
+    if (!shippingInfo.zip.trim()) {
+      errors.zip = "ZIP code is required.";
+    } else if (!/^[a-zA-Z0-9\s-]{3,10}$/.test(shippingInfo.zip)) {
+      errors.zip = "Invalid ZIP code format.";
+    }
+
+    if (!shippingInfo.country.trim()) {
+      errors.country = "Country is required.";
+    }
+
+    if (shippingInfo.phone && !/^[0-9+\-\s()]{7,20}$/.test(shippingInfo.phone)) {
+      errors.phone = "Invalid phone number.";
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setShippingInfo((prev) => ({ ...prev, [name]: value }));
+    setFieldErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
+  const handleQtyChange = async (index, value) => {
+    const nextQty = Math.max(1, Number(value) || 1);
+    const targetItem = orderData[index];
+    if (!targetItem) return;
+
+    const previousQty = getQty(targetItem);
+
+    setOrderData((prev) =>
+      prev.map((item, i) =>
+        i === index
+          ? {
+              ...item,
+              qty: nextQty,
+              quantity: nextQty,
+            }
+          : item
+      )
+    );
+
+    try {
+      const updatedItems = await updatePOItemQty({
+        productId: targetItem.productId || targetItem.styleNo,
+        color: targetItem.color || null,
+        size: targetItem.size || null,
+        qty: nextQty,
+      });
+
+      if (Array.isArray(updatedItems)) {
+        setOrderData(
+          updatedItems.map((item) => ({
+            ...item,
+            qty: item.quantity ?? item.qty ?? 0,
+          }))
+        );
+      }
+
+      setError("");
+    } catch (err) {
+      setOrderData((prev) =>
+        prev.map((item, i) =>
+          i === index
+            ? {
+                ...item,
+                qty: previousQty,
+                quantity: previousQty,
+              }
+            : item
+        )
+      );
+      setError(err.message || "Failed to update quantity");
+    }
+  };
+
+  const handleRemoveItem = async (index) => {
+    const targetItem = orderData[index];
+    if (!targetItem) return;
+
+    const previousItems = orderData;
+    setOrderData((prev) => prev.filter((_, i) => i !== index));
+
+    try {
+      const updatedItems = await removeFromPO({
+        productId: targetItem.productId || targetItem.styleNo,
+        color: targetItem.color || null,
+        size: targetItem.size || null,
+      });
+
+      if (Array.isArray(updatedItems)) {
+        setOrderData(
+          updatedItems.map((item) => ({
+            ...item,
+            qty: item.quantity ?? item.qty ?? 0,
+          }))
+        );
+      }
+
+      setError("");
+    } catch (err) {
+      setOrderData(previousItems);
+      setError(err.message || "Failed to remove item");
+    }
+  };
+
+  // ------------------------
+  // CHECKOUT
+  // ------------------------
   const handleStripeCheckout = async () => {
     setError("");
 
-    const requiredFields = ["firstName", "address", "city", "zip", "country"];
-    const missing = requiredFields.filter((f) => !shippingInfo[f]?.trim());
-    if (missing.length) {
-      setError("Please fill all required shipping fields.");
-      return;
-    }
+    if (!validateFields()) return;
 
     setSubmitting(true);
 
     try {
-      // Save Purchase Order
-      const saveRes = await fetch(`${API_URL}/api/purchase-order`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          items: orderData,
-          shippingInfo,
-          subtotal,
-          shippingCost,
-          estimatedTax,
-          totalAmount: total,
-          form,
-          purchaseOrderId,
-          ownerType: guest ? "Guest" : "User",
-          ownerId: guest?._id || user?._id,
-        }),
-      });
-      const saved = await saveRes.json();
-      if (!saveRes.ok) throw new Error(saved.error || "Failed to save order");
-      const orderId = saved?.order?._id;
-      if (!orderId) throw new Error("Order ID not returned");
+      const sessionRes = await fetch(
+        `${API_URL}/api/payment/create-checkout-session`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            items: orderData,
+            purchaseOrderId,
+            shippingCost,
+            estimatedTax,
+            subtotal,
+            totalAmount: total,
+            shippingInfo,
+            form: {
+              ...form,
+              email: shippingInfo.email,
+            },
+            ownerType: guest ? "Guest" : "User",
+            ownerId: guest?._id || user?._id,
+          }),
+        }
+      );
 
-      // Create Stripe session
-      const sessionRes = await fetch(`${API_URL}/api/payment/create-checkout-session`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId }),
-      });
       const sessionData = await sessionRes.json();
-      if (!sessionRes.ok) throw new Error(sessionData.error || "Stripe session creation failed");
+      if (!sessionRes.ok)
+        throw new Error(sessionData.error || "Stripe session creation failed");
 
       if (guest && endGuestSession) endGuestSession();
 
       window.location.assign(sessionData.url);
     } catch (err) {
-      console.error("Checkout error:", err);
       setError(err.message || "Checkout failed");
       setSubmitting(false);
     }
@@ -122,24 +266,44 @@ const Checkout = () => {
       <h2>Checkout</h2>
 
       <div className="po-container">
-        {/* LEFT COLUMN – SHIPPING */}
         <div className="po-left po-form-section">
           <h3>Shipping Details</h3>
 
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={shippingInfo.email}
+            onChange={handleInputChange}
+          />
+          {fieldErrors.email && (
+            <p className="field-error">{fieldErrors.email}</p>
+          )}
+
           <div className="input-row">
-            <input
-              name="firstName"
-              placeholder="First Name"
-              value={shippingInfo.firstName}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              name="lastName"
-              placeholder="Last Name"
-              value={shippingInfo.lastName}
-              onChange={handleInputChange}
-            />
+            <div>
+              <input
+                name="firstName"
+                placeholder="First Name"
+                value={shippingInfo.firstName}
+                onChange={handleInputChange}
+              />
+              {fieldErrors.firstName && (
+                <p className="field-error">{fieldErrors.firstName}</p>
+              )}
+            </div>
+
+            <div>
+              <input
+                name="lastName"
+                placeholder="Last Name"
+                value={shippingInfo.lastName}
+                onChange={handleInputChange}
+              />
+              {fieldErrors.lastName && (
+                <p className="field-error">{fieldErrors.lastName}</p>
+              )}
+            </div>
           </div>
 
           <input
@@ -154,40 +318,61 @@ const Checkout = () => {
             placeholder="Address"
             value={shippingInfo.address}
             onChange={handleInputChange}
-            required
           />
+          {fieldErrors.address && (
+            <p className="field-error">{fieldErrors.address}</p>
+          )}
 
           <div className="input-row">
-            <input
-              name="city"
-              placeholder="City"
-              value={shippingInfo.city}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              name="state"
-              placeholder="State"
-              value={shippingInfo.state}
-              onChange={handleInputChange}
-            />
+            <div>
+              <input
+                name="city"
+                placeholder="City"
+                value={shippingInfo.city}
+                onChange={handleInputChange}
+              />
+              {fieldErrors.city && (
+                <p className="field-error">{fieldErrors.city}</p>
+              )}
+            </div>
+
+            <div>
+              <input
+                name="state"
+                placeholder="State"
+                value={shippingInfo.state}
+                onChange={handleInputChange}
+              />
+              {fieldErrors.state && (
+                <p className="field-error">{fieldErrors.state}</p>
+              )}
+            </div>
           </div>
 
           <div className="input-row">
-            <input
-              name="zip"
-              placeholder="ZIP Code"
-              value={shippingInfo.zip}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              name="country"
-              placeholder="Country"
-              value={shippingInfo.country}
-              onChange={handleInputChange}
-              required
-            />
+            <div>
+              <input
+                name="zip"
+                placeholder="ZIP Code"
+                value={shippingInfo.zip}
+                onChange={handleInputChange}
+              />
+              {fieldErrors.zip && (
+                <p className="field-error">{fieldErrors.zip}</p>
+              )}
+            </div>
+
+            <div>
+              <input
+                name="country"
+                placeholder="Country"
+                value={shippingInfo.country}
+                onChange={handleInputChange}
+              />
+              {fieldErrors.country && (
+                <p className="field-error">{fieldErrors.country}</p>
+              )}
+            </div>
           </div>
 
           <input
@@ -196,11 +381,65 @@ const Checkout = () => {
             value={shippingInfo.phone}
             onChange={handleInputChange}
           />
+          {fieldErrors.phone && (
+            <p className="field-error">{fieldErrors.phone}</p>
+          )}
         </div>
 
-        {/* RIGHT COLUMN – ORDER SUMMARY */}
         <div className="po-right po-form-section">
           <h3>Purchase Order Summary</h3>
+
+          {!orderData.length && (
+            <p className="checkout-empty-summary">No items in checkout summary.</p>
+          )}
+
+          <div className="checkout-summary-items">
+            {orderData.map((item, idx) => {
+              const qty = getQty(item);
+              const imageSrc =
+                item.image ||
+                item.imageUrl ||
+                item.thumbnail ||
+                item.images?.[0] ||
+                "/images/no-image.png";
+              const productName = item.name || item.description || "Product";
+
+              return (
+                <div className="checkout-summary-item" key={`${item.productId || item.styleNo || productName || "item"}-${idx}`}>
+                  <img
+                    src={imageSrc}
+                    alt={productName}
+                    className="checkout-summary-thumb"
+                  />
+
+                  <div className="checkout-summary-details">
+                    <p className="checkout-summary-name">{productName}</p>
+                    <div className="checkout-summary-actions">
+                      <label className="checkout-qty-wrap">
+                        <span className="checkout-summary-meta">Qty</span>
+                        <input
+                          type="number"
+                          min="1"
+                          value={qty}
+                          onChange={(e) => handleQtyChange(idx, e.target.value)}
+                          className="checkout-qty-input"
+                        />
+                      </label>
+
+                      <button
+                        type="button"
+                        className="checkout-remove-btn"
+                        onClick={() => handleRemoveItem(idx)}>X</button>
+                    </div>
+                  </div>
+
+                  <p className="checkout-summary-line-total">
+                    ${(qty * getPrice(item)).toFixed(2)}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
 
           <div className="summary-row">
             <span>Subtotal</span>
@@ -228,7 +467,7 @@ const Checkout = () => {
           <button
             type="button"
             onClick={handleStripeCheckout}
-            disabled={submitting}
+            disabled={submitting || !orderData.length}
           >
             {submitting ? "Redirecting..." : "Place Order"}
           </button>

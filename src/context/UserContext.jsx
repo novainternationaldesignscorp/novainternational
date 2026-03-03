@@ -44,6 +44,9 @@ export const UserProvider = ({ children }) => {
         const errData = await res.json();
         throw new Error(errData.message || "Signup failed");
       }
+
+      const data = await res.json();
+      return data.user || null;
     } catch (err) {
       throw new Error(err.message || "Signup failed");
     }
