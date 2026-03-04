@@ -1,11 +1,6 @@
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React from "react";
 import "./App.css";
-import { GuestProvider } from "./context/GuestContext.jsx";
 
 /* Components */
 import Navbar from "./components/navbar/Navbar.jsx";
@@ -31,45 +26,39 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import AdminOrders from "./pages/AdminOrders.jsx";
 import PurchaseHistory from "./pages/PurchaseHistory.jsx";
 
-const stripePromise = loadStripe(import.meta.env.VITE_PUBLISHABLE_KEY);
-
 
 function App() {
   return (
     <BrowserRouter>
-      <GuestProvider>
-        <Elements stripe={stripePromise}>
-          <Navbar />
+      <Navbar />
 
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Carousel />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/products" element={<Product />} />
-            <Route path="/product/:slug" element={<ProductDetails />} />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Carousel />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/products" element={<Product />} />
+        <Route path="/product/:slug" element={<ProductDetails />} />
 
-            <Route path="/category/:category" element={<Category />} />
-            <Route path="/category/:category/:subcategory" element={<Category />} />
+        <Route path="/category/:category" element={<Category />} />
+        <Route path="/category/:category/:subcategory" element={<Category />} />
 
-            <Route path="/digital-letter-head/:orderId" element={<DigitalLetterHead />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/Signup" element={<Signup />} />
-            <Route path="/checkout-guest" element={<CheckoutGuest />} />  
-            <Route path="/order-confirmation" element={<OrderConfirmation />} />
-            <Route path="/checkout" element={<Checkout />} />
+        <Route path="/digital-letter-head/:orderId" element={<DigitalLetterHead />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/Signup" element={<Signup />} />
+        <Route path="/checkout-guest" element={<CheckoutGuest />} />  
+        <Route path="/order-confirmation" element={<OrderConfirmation />} />
+        <Route path="/checkout" element={<Checkout />} />
 
-            {/* Protected Routes */}
-            <Route path="/purchase-order" element={<ProtectedRoute><PurchaseOrder /></ProtectedRoute>} />
-            <Route path="/purchase-order/form" element={<ProtectedRoute><PurchaseOrderForm /></ProtectedRoute>} />
-            <Route path="/purchaseordersummary" element={<ProtectedRoute><PurchaseOrderSummary /></ProtectedRoute>} />       
-            <Route path="/admin/orders" element={<ProtectedRoute><AdminOrders /></ProtectedRoute>} />
-            <Route path="/purchase-history" element={<ProtectedRoute><PurchaseHistory /></ProtectedRoute>} />
-          </Routes>
+        {/* Protected Routes */}
+        <Route path="/purchase-order" element={<ProtectedRoute><PurchaseOrder /></ProtectedRoute>} />
+        <Route path="/purchase-order/form" element={<ProtectedRoute><PurchaseOrderForm /></ProtectedRoute>} />
+        <Route path="/purchaseordersummary" element={<ProtectedRoute><PurchaseOrderSummary /></ProtectedRoute>} />       
+        <Route path="/admin/orders" element={<ProtectedRoute><AdminOrders /></ProtectedRoute>} />
+        <Route path="/purchase-history" element={<ProtectedRoute><PurchaseHistory /></ProtectedRoute>} />
+      </Routes>
 
-          <Footer />
-        </Elements>
-      </GuestProvider>
+      <Footer />
     </BrowserRouter>
   );
 }
