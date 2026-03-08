@@ -24,10 +24,12 @@ export default function PurchaseHistory() {
         setLoading(true);
         // Determine which endpoint to use
         const endpoint = user
-          ? `${API_URL}/api/orders/user/${user._id}`
-          : `${API_URL}/api/orders/guest/${guest._id}`;
+          ? `${API_URL}/api/orders/my-orders`
+          : `${API_URL}/api/orders/guest/${guest._id}?sessionId=${encodeURIComponent(
+              guest.sessionId || ""
+            )}`;
 
-        const res = await fetch(endpoint);
+        const res = await fetch(endpoint, { credentials: "include" });
         if (!res.ok) {
           throw new Error("Failed to fetch orders");
         }
@@ -82,9 +84,9 @@ export default function PurchaseHistory() {
           >
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
               <div>
-                <h3>Order #{order.purchaseOrderId || order._id?.toString().slice(0, 8)}</h3>
+                <h3>Purchase Order ID #{order.purchaseOrderId || order._id?.toString().slice(0, 8)}</h3>
                 <p style={{ margin: "0.5rem 0", fontSize: "0.9rem", color: "#666" }}>
-                  Ordered on: {new Date(order.createdAt).toLocaleDateString()} at{" "}
+                  Order Purchase on: {new Date(order.createdAt).toLocaleDateString()} at{" "}
                   {new Date(order.createdAt).toLocaleTimeString()}
                 </p>
               </div>

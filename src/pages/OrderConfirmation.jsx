@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { usePO } from "../context/PurchaseOrderContext";
-import { useGuest } from "../context/GuestContext";
 import "./CSS/orderConfirmation.css";
 
 export default function OrderConfirmation() {
@@ -15,7 +14,6 @@ export default function OrderConfirmation() {
 
   const API_URL = import.meta.env.VITE_API_URL || "";
   const { clearPO } = usePO();
-  const { endGuestSession } = useGuest();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,26 +23,46 @@ export default function OrderConfirmation() {
       return;
     }
 
-    const fetchOrder = async () => {
-      try {
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    const fetchOrderWithRetry = async () => {
+      const maxAttempts = 6;
+      const retryDelayMs = 1200;
+
+      for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
         const res = await fetch(`${API_URL}/api/payment/order/${sessionId}`, {
           credentials: "include",
         });
 
-        if (!res.ok) {
-          if (res.status === 404) throw new Error("Order not found for this session.");
-          throw new Error(`Failed to fetch order. Status: ${res.status}`);
+        if (res.ok) {
+          return res.json();
         }
 
-        const data = await res.json();
+        if (res.status === 404 && attempt < maxAttempts) {
+          await wait(retryDelayMs);
+          continue;
+        }
+
+        if (res.status === 404) {
+          throw new Error("Order not found for this session.");
+        }
+
+        throw new Error(`Failed to fetch order. Status: ${res.status}`);
+      }
+
+      throw new Error("Unable to fetch order confirmation.");
+    };
+
+    const fetchOrder = async () => {
+      try {
+        const data = await fetchOrderWithRetry();
 
         if (!data) throw new Error("Order data is empty.");
 
         setOrder(data);
 
-        // Clear frontend purchase order and guest session
+        // Clear only cart/draft data; keep user/guest authenticated.
         clearPO();
-        endGuestSession();
       } catch (err) {
         console.error("Fetch order error:", err);
         setError(err.message || "Failed to fetch order.");
@@ -54,7 +72,17 @@ export default function OrderConfirmation() {
     };
 
     fetchOrder();
-  }, [sessionId, API_URL, clearPO, endGuestSession]);
+  }, [sessionId, API_URL, clearPO]);
+
+  useEffect(() => {
+    if (loading || error || !order) return undefined;
+
+    const timer = setTimeout(() => {
+      navigate("/");
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [loading, error, order, navigate]);
 
   // Loading state
   if (loading) return <div className="loading">Loading your order...</div>;
@@ -75,7 +103,7 @@ export default function OrderConfirmation() {
   return (
     <div className="order-confirmation">
       <h2>
-        Thank you for your order, {order.customerName || order.form?.customerName || "Customer"}!
+        Thank you for your order {order.customerName || order.form?.customerName}!
       </h2>
       <p><strong>Purchase Order ID:</strong> {order.purchaseOrderId || order._id || "N/A"}</p>
       <p className="success-text">Your payment was successful.</p>
@@ -121,6 +149,7 @@ export default function OrderConfirmation() {
 
       <div className="back-home">
         <button onClick={() => navigate("/")}>Back to Home</button>
+        <p>You will be redirected to Home in 5 seconds.</p>
       </div>
     </div>
   );

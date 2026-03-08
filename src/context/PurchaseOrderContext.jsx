@@ -22,7 +22,7 @@ export const PurchaseOrderProvider = ({ children }) => {
       image: i.image || null,
     }));
 
-  // Load from server (when logged in or guest) or from localStorage
+  // Load draft items from server for logged-in users and guests.
   useEffect(() => {
     const load = async () => {
       let ownerType, ownerId;
@@ -55,8 +55,7 @@ export const PurchaseOrderProvider = ({ children }) => {
         }
       }
 
-      // If no server draft found and no owner, start with empty PO items
-      // (do not persist to localStorage in testing/production)
+      // If no server draft exists, keep an in-memory empty cart.
     };
 
     load();

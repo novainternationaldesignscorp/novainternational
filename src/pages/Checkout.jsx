@@ -18,7 +18,7 @@ const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { guest, endGuestSession } = useGuest();
+  const { guest } = useGuest();
   const { user, loading } = useContext(UserContext);
   const { purchaseOrderId, removeFromPO, updatePOItemQty } = usePO();
 
@@ -227,6 +227,7 @@ const Checkout = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({
             items: orderData,
             purchaseOrderId,
@@ -241,6 +242,7 @@ const Checkout = () => {
             },
             ownerType: guest ? "Guest" : "User",
             ownerId: guest?._id || user?._id,
+            guestSessionId: guest?.sessionId || null,
           }),
         }
       );
@@ -248,8 +250,6 @@ const Checkout = () => {
       const sessionData = await sessionRes.json();
       if (!sessionRes.ok)
         throw new Error(sessionData.error || "Stripe session creation failed");
-
-      if (guest && endGuestSession) endGuestSession();
 
       window.location.assign(sessionData.url);
     } catch (err) {

@@ -17,11 +17,30 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim().toLowerCase();
+
+    if (!trimmedName || !trimmedEmail || !password) {
+      setError("Name, email and password are required.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
     setLoading(true);
 
     try {
       // 1️ Create user
-      const createdUser = await signUp(name, email, password);
+      const createdUser = await signUp(trimmedName, trimmedEmail, password);
 
       // 2️ Authenticate immediately with created user
       await signIn(createdUser);

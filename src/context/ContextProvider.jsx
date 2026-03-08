@@ -7,7 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  // Load user from localStorage when app starts
+  // Session state is resolved by UserContext on app start.
   useEffect(() => {
     // Do not persist user in localStorage for testing/production.
     // Authentication is handled by `UserContext` which fetches session from the server.

@@ -41,7 +41,13 @@ export const UserProvider = ({ children }) => {
       });
 
       if (!res.ok) {
-        const errData = await res.json();
+        const errData = await res.json().catch(() => ({}));
+        if (res.status === 409) {
+          throw new Error(errData.message || "User already exists. Please sign in.");
+        }
+        if (res.status === 422) {
+          throw new Error(errData.message || "Please check signup details and try again.");
+        }
         throw new Error(errData.message || "Signup failed");
       }
 
@@ -72,8 +78,6 @@ export const UserProvider = ({ children }) => {
         credentials: "include",
       });
       setUser(null);
-      // Clear local purchase order cache to avoid leaking items between users
-      try { localStorage.removeItem("poItems"); } catch (e) {}
       // Refresh and navigate home
       window.location.href = "/";
     } catch (err) {
