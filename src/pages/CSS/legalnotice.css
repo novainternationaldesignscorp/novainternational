@@ -1,0 +1,43 @@
+.legal-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.7;
+  color: #333;
+}
+
+.legal-container h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.update {
+  color: #777;
+  margin-bottom: 25px;
+}
+
+.legal-container h2 {
+  margin-top: 30px;
+  font-size: 22px;
+  color: #222;
+}
+
+.legal-container p {
+  margin-bottom: 15px;
+}
+
+.legal-container ul {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.legal-container li {
+  margin-bottom: 8px;
+}
+
+.contact-box {
+  padding: 20px;
+  border-radius: 6px;
+  margin-top: 10px;
+}

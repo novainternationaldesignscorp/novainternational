@@ -7,8 +7,9 @@ import { useGuest } from "../context/GuestContext.jsx";
 import { UserContext } from "../context/UserContext.jsx";
 
 const TAX_RATE = 0.07;
-const SHIPPING_FLAT = 15;
-const FREE_SHIPPING_THRESHOLD = 500;
+const EXTRA_FEE = 4.7;
+// const SHIPPING_FLAT = 15;
+// const FREE_SHIPPING_THRESHOLD = 500;
 
 const getQty = (item) => Number(item.qty ?? item.quantity ?? 0);
 const getPrice = (item) => Number(item.price ?? item.unitPrice ?? 0);
@@ -63,9 +64,13 @@ const Checkout = () => {
     [orderData]
   );
 
-  const shippingCost = subtotal <= 0 ? 0 : subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FLAT;
-  const estimatedTax = subtotal <= 0 ? 0 : (subtotal + shippingCost) * TAX_RATE;
-  const total = subtotal + shippingCost + estimatedTax;
+  // const shippingCost = subtotal <= 0 ? 0 : subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FLAT;
+  // const estimatedTax = subtotal <= 0 ? 0 : (subtotal + shippingCost) * TAX_RATE;
+  // const total = subtotal + shippingCost + estimatedTax;
+
+  const shippingCost = 0;
+  const estimatedTax = subtotal <= 0 ? 0 : subtotal * TAX_RATE;
+  const total = subtotal + estimatedTax + EXTRA_FEE;
 
   // ------------------------
   // VALIDATION
@@ -232,6 +237,7 @@ const Checkout = () => {
             purchaseOrderId,
             shippingCost,
             estimatedTax,
+            extraFee: EXTRA_FEE,
             subtotal,
             totalAmount: total,
             shippingInfo,
@@ -445,14 +451,19 @@ const Checkout = () => {
             <span>${subtotal.toFixed(2)}</span>
           </div>
 
-          <div className="summary-row">
+          {/* <div className="summary-row">
             <span>Shipping</span>
             <span>${shippingCost.toFixed(2)}</span>
-          </div>
+          </div> */}
 
           <div className="summary-row">
             <span>Estimated Tax</span>
             <span>${estimatedTax.toFixed(2)}</span>
+          </div>
+
+          <div className="summary-row">
+          <span>Processing Fee</span>
+          <span>${EXTRA_FEE.toFixed(2)}</span>
           </div>
 
           <hr />
@@ -468,7 +479,7 @@ const Checkout = () => {
             onClick={handleStripeCheckout}
             disabled={submitting || !orderData.length}
           >
-            {submitting ? "Redirecting..." : "Place Order"}
+            {submitting ? "Redirecting..." : "Confirm Order"}
           </button>
         </div>
       </div>

@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { useGuest } from "../../context/GuestContext.jsx";
-import SignOutButton from "../SignOutButton";  // For sign-out functionality
+import SignOutButton from "../SignOutButton";  
 import { usePO } from "../../context/PurchaseOrderContext.jsx";
 import "./navbar.css";
 
@@ -46,8 +46,8 @@ const Navbar = () => {
           heading: "More Sizes >",
           links: [
             { title: "Plus Sizes", path: "#" },
-            { title: "Petites", path: "#" },
-            { title: "Juniors & Young Adult", path: "#" },
+            { title: "Petites", path: "/category/fashion/women" },
+            { title: "Juniors & Young Adult", path: "/category/fashion/women" },
             { title: "Maternity", path: "#" },
           ],
         },
@@ -106,10 +106,10 @@ const Navbar = () => {
         {
           heading: "New & Trending >",
           links: [
-            { title: "New Arrivals In Electronics", path: "#" },
-            { title: "Contemporary Trending", path: "#" },
-            { title: "New Electronics Designs", path: "#" },
-            { title: "Trending Colors Designs", path: "#" },
+            { title: "New Arrivals In Electronics", path: "/category/electronics" },
+            { title: "Contemporary Trending", path: "/category/electronics" },
+            { title: "New Electronics Designs", path: "/category/electronics" },
+            { title: "Trending Colors Designs", path: "/category/electronics" },
           ],
         },
       ],
@@ -129,22 +129,62 @@ const Navbar = () => {
         {
           heading: "New & Trending >",
           links: [
-            { title: "New Arrivals In Clutches", path: "#" },
-            { title: "Contemporary Trending", path: "#" },
-            { title: "New Fashion Designs", path: "#" },
-            { title: "Trending Colors Designs", path: "#" },
+            { title: "New Arrivals In Designer Bags", path: "/category/accessories" },
+            { title: "Contemporary Trending", path: "/category/accessories" },
+            { title: "New Fashion Designs", path: "/category/accessories" },
+            { title: "Trending Colors Designs", path: "/category/accessories" },
           ],
         },
       ],
     },
     {
+      title: "Wedding Gifts",
+      path: "/category/wedding-gifts",
+      megaMenu: [
+        {
+          heading: "Wedding Gifts >",
+          links: [
+            { title: "Churas with Kaliras", path: "/category/wedding-gifts" },
+          ],
+        },
+        {
+          heading: "New & Trending >",
+          links: [
+            { title: "New Arrivals In Churas with Kaliras", path: "/category/wedding-gifts" },
+            { title: "Contemporary Trending", path: "/category/wedding-gifts" },
+            { title: "New Fashion Designs", path: "/category/wedding-gifts" },
+            { title: "Trending Colors Designs", path: "/category/wedding-gifts" },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Nova Chocolates",
+      path: "/category/nova-chocolates",
+      megaMenu: [
+        {
+          heading: "Nova Chocolates >",
+          links: [
+            { title: "Milk Bars", path: "/category/nova-chocolates/milk-bar" },
+            { title: "Nova Specials", path: "/category/nova-chocolates" },
+          ],
+        },
+        {
+          heading: "New & Trending >",
+          links: [
+            { title: "New Arrivals In Milk Bars", path: "/category/nova-chocolates" },
+          ],
+        },
+      ],
+    },
+     {
       title: "Business To Business",
       path: "#",
       megaMenu: [
         {
           heading: "Business To Business >",
           links: [
-            { title: "Investor Relations", path: "/women/clothing/womens-wear" },
+            { title: "Investor Relations", path: "#" },
             { title: "Inventory Details", path: "#" },
             { title: "Digital Purchase Order", path: "#" },
             { title: "Latest Updates", path: "#" },

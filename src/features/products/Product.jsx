@@ -24,7 +24,7 @@ function ProductPage() {
     <div className="product-detail">
       <h1>{product.name}</h1>
       <img src={product.images[0]} alt={product.name} />
-      <p>Price: US${product.price}</p>
+      <p>Price: USD{product.price}</p>
       <p>Category: {product.category}</p>
       {product.subcategory && <p>Subcategory: {product.subcategory}</p>}
       {product.colors && <p>Colors: {product.colors.join(", ")}</p>}

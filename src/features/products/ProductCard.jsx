@@ -70,7 +70,7 @@ function ProductCard({ product }) {
       />
 
       <h3 className="product-name" onClick={() => navigate(`/product/${product.slug || product._id}`)}>{product.name}</h3>
-      <p className="price">US$ {product.price}</p>
+      <p className="price">USD {product.price}</p>
 
     </div>
   );

@@ -88,7 +88,7 @@ export const PurchaseOrderProvider = ({ children }) => {
 
   const removeFromPO = async (productId) => {
     // Accept either a productId string or an object { productId, color, size }
-    if (!productId) return;
+    if (!productId) throw new Error("productId is required");
 
     // Determine ownerType and ownerId
     let ownerType, ownerId;
@@ -104,51 +104,40 @@ export const PurchaseOrderProvider = ({ children }) => {
       ? `${import.meta.env.VITE_API_URL}/api/purchaseOrderDraft/${ownerType}/${ownerId}/items`
       : null;
 
-    // If user or guest is logged in, request backend to remove
-    if (endpoint) {
-      try {
-        let body = null;
-        if (typeof productId === "string") body = { productId };
-        else body = {
-          productId: productId.productId,
-          color: productId.color,
-          size: productId.size,
-        };
-
-        const res = await fetch(endpoint, {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(body),
-        });
-
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          throw new Error(err.error || err.message || "Failed to remove item");
-        }
-
-        const data = await res.json();
-        const items = mapDraftItems(data.po?.items || data.po);
-        setPoItems(items);
-        return items;
-      } catch (err) {
-        console.error("Error removing item from server PO:", err);
-        // fall through to local-only removal
-      }
+    if (!endpoint) {
+      throw new Error("Session not ready. Please wait a moment and try again.");
     }
 
-    setPoItems((prev) => {
-      if (typeof productId === "string") {
-        return prev.filter((p) => p.productId !== productId);
+    // If user or guest is logged in, request backend to remove
+    try {
+      let body = null;
+      if (typeof productId === "string") body = { productId };
+      else body = {
+        productId: productId.productId,
+        color: productId.color,
+        size: productId.size,
+      };
+
+      const res = await fetch(endpoint, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || err.message || "Failed to remove item");
       }
 
-      const { productId: id, color, size } = productId;
-      return prev.filter(
-        (p) => !(p.productId === id && (color ? p.color === color : true) && (size ? p.size === size : true))
-      );
-    });
-
-    return null;
+      const data = await res.json();
+      const items = mapDraftItems(data.po?.items || data.po);
+      setPoItems(items);
+      return items;
+    } catch (err) {
+      console.error("Error removing item from server PO:", err);
+      throw err;
+    }
   };
 
   const updatePOItemQty = async ({ productId, color = null, size = null, qty }) => {

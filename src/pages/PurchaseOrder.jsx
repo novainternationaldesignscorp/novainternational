@@ -12,6 +12,7 @@ function PurchaseOrder() {
   const navigate = useNavigate();
   const { poItems, removeFromPO, clearPO } = usePO();
   const [error, setError] = useState("");
+  const [removingKey, setRemovingKey] = useState("");
 
   if (loading) return <p className="po-loading">Checking login status...</p>;
   
@@ -32,11 +33,21 @@ function PurchaseOrder() {
 
   const handleRemove = async (item) => {
     setError("");
+    const productId = item.productId || item.styleNo;
+    if (!productId) {
+      setError("Missing product id. Please refresh and try again.");
+      return;
+    }
+
+    const key = `${productId}|${item.color || ""}|${item.size || ""}`;
     try {
-      await removeFromPO({ productId: item.productId, color: item.color, size: item.size });
+      setRemovingKey(key);
+      await removeFromPO({ productId, color: item.color, size: item.size });
     } catch (err) {
       console.error(err);
       setError(err.message || "Failed to remove item");
+    } finally {
+      setRemovingKey("");
     }
   };
 
@@ -61,7 +72,10 @@ function PurchaseOrder() {
             </tr>
           </thead>
           <tbody>
-            {poItems.map((item, idx) => (
+            {poItems.map((item, idx) => {
+              const itemKey = `${(item.productId || item.styleNo || idx)}|${item.color || ""}|${item.size || ""}`;
+              const isRemoving = removingKey === itemKey;
+              return (
               <tr key={idx}>
                 <td>{item.name}</td>
                 <td>{item.color || "-"}</td>
@@ -70,10 +84,16 @@ function PurchaseOrder() {
                 <td>${(item.price || 0).toFixed(2)}</td>
                 <td>${((item.price || 0) * (item.quantity || item.qty || 0)).toFixed(2)}</td>
                 <td>
-                  <button className="po-remove-btn" onClick={() => handleRemove(item)}>Remove</button>
+                  <button
+                    className="po-remove-btn"
+                    onClick={() => handleRemove(item)}
+                    disabled={isRemoving}
+                  >
+                    {isRemoving ? "Removing..." : "Remove"}
+                  </button>
                 </td>
               </tr>
-            ))}
+            )})}
           </tbody>
         </table>
       </div>

@@ -264,10 +264,7 @@ function ProductDetails() {
     <div className="product-details">
 
     <div className="images-section">
-      <div className="main-image">
-        <img src={selectedImage || defaultImage} alt={product.name} />
-      </div>
-      <div className="thumbnails">
+       <div className="thumbnails">
         {product.images?.map((img, idx) => (
           <img
             key={idx}
@@ -278,9 +275,14 @@ function ProductDetails() {
           />
         ))}
       </div>
+      <div className="main-image">
+        <img src={selectedImage || defaultImage} alt={product.name} />
+      </div>
+     
     </div>
 
       <div className="info-section">
+        <p className="style-no">Style No: {product.styleNo}</p>
         <h1>
           {(() => {
             const colors = getVariantColors();
@@ -295,7 +297,7 @@ function ProductDetails() {
             return selectedColor ? `${baseName} - ${selectedColor}` : baseName;
           })()}
         </h1>
-        <h2 className="price">US$ {selectedVariant?.price ?? product.price}</h2>
+        <h2 className="price">USD {selectedVariant?.price ?? product.price}</h2>
         <p className="category">{product.category}</p>
         <p className="description">{product.description}</p>
 
@@ -353,10 +355,10 @@ function ProductDetails() {
               ))}
 
               <button onClick={addOrderItem}>Add Another Size</button>
-              <p>Total Quantity: {totalQuantity}</p>
+              {/* <p>Total Quantity: {totalQuantity}</p>
               <p className="min-qty-note">
                 Minimum total order quantity: <strong>{MIN_QTY}</strong>
-              </p>
+              </p> */}
             </div>
           </div>
         )}

@@ -12,6 +12,12 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import Careers from "./pages/Careers.jsx";
+
+import CookiePolicy from "./pages/CookiePolicy.jsx";
+import PrivacyNotice from "./pages/PrivacyNotice.jsx";
+import LegalNotice from "./pages/LegalNotice.jsx";
+import TermsConditions from "./pages/TermsConditions.jsx";
+
 import Category from "./pages/Category.jsx";
 import Product from "./features/products/Product.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
@@ -39,6 +45,12 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/careers" element={<Careers />} />
+
+        <Route path="/cookiepolicy" element={<CookiePolicy />} />
+        <Route path="/privacynotice" element={<PrivacyNotice />} />
+        <Route path="/legalnotice" element={<LegalNotice />} />
+        <Route path="/termsconditions" element={<TermsConditions />} />
+
         <Route path="/products" element={<Product />} />
         <Route path="/product/:slug" element={<ProductDetails />} />
 

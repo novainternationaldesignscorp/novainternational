@@ -39,10 +39,10 @@ export default function PurchaseOrderForm({ items }) {
     if (source && source.length > 0) {
       setOrderItems(
         source.map((item) => ({
-          productId: item.productId || item.styleNo,
-          styleNo: item.styleNo || item.productId,
+          productId: item.productId || item.styleNo || "",
+          styleNo: item.styleNo || item.productId || "",
           name: item.name || item.description || "",
-          description: item.name || item.description,
+          description: item.name || item.description || "",
           color: item.color || "",
           size: item.size || "",
           qty: item.quantity ?? item.qty ?? 0,
@@ -87,15 +87,18 @@ export default function PurchaseOrderForm({ items }) {
 
   const removeRow = async (index) => {
     const item = orderItems[index];
-    setOrderItems((prev) => prev.filter((_, i) => i !== index));
     const productId = item.productId || item.styleNo;
-    if (productId) {
-      try {
-        await removeFromPO({ productId, color: item.color, size: item.size });
-      } catch (err) {
-        console.error("Failed to remove PO item:", err);
-        setFormError("Failed to remove item from Purchase Order");
-      }
+    if (!productId) {
+      setOrderItems((prev) => prev.filter((_, i) => i !== index));
+      return;
+    }
+
+    try {
+      await removeFromPO({ productId, color: item.color, size: item.size });
+      setOrderItems((prev) => prev.filter((_, i) => i !== index));
+    } catch (err) {
+      console.error("Failed to remove PO item:", err);
+      setFormError(err.message || "Failed to remove item from Purchase Order");
     }
   };
 
@@ -140,13 +143,13 @@ export default function PurchaseOrderForm({ items }) {
             <tbody>
               {orderItems.map((item, index) => (
                 <tr key={index}>
-                  <td><input value={item.styleNo} readOnly /></td>
-                  <td><input value={item.description} readOnly /></td>
-                  <td><input value={item.size} onChange={(e) => handleItemChange(index, "size", e.target.value)} /></td>
-                  <td><input value={item.color} onChange={(e) => handleItemChange(index, "color", e.target.value)} /></td>
-                  <td><input type="number" value={item.qty} onChange={(e) => handleItemChange(index, "qty", Number(e.target.value))} min={0} /></td>
-                  <td><input type="number" value={item.price} readOnly /></td>
-                  <td><input value={item.total} readOnly /></td>
+                  <td><input value={item.styleNo ?? ""} readOnly /></td>
+                  <td><input value={item.description ?? ""} readOnly /></td>
+                  <td><input value={item.size ?? ""} onChange={(e) => handleItemChange(index, "size", e.target.value)} /></td>
+                  <td><input value={item.color ?? ""} onChange={(e) => handleItemChange(index, "color", e.target.value)} /></td>
+                  <td><input type="number" value={item.qty ?? 0} onChange={(e) => handleItemChange(index, "qty", Number(e.target.value))} min={0} /></td>
+                  <td><input type="number" value={item.price ?? 0} readOnly /></td>
+                  <td><input value={item.total ?? 0} readOnly /></td>
                   <td><button type="button" onClick={() => removeRow(index)}>X</button></td>
                 </tr>
               ))}

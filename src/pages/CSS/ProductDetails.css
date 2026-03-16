@@ -11,21 +11,6 @@
   color: #333;
 }
 
-.images-section {
-  flex: 1;
-  min-width: 300px;
-  display: flex;
-  justify-content: center;
-}
-
-.images-section img {
-  width: 450px;
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
-}
-
 .info-section {
   flex: 1;
   min-width: 300px;
@@ -46,6 +31,12 @@
 .category {
   color: #666;
   margin-bottom: 15px;
+}
+
+.style-no {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
 }
 
 .description {
@@ -177,8 +168,8 @@
   width: 450px;
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+  /* border-radius: 8px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15); */
   cursor: pointer;
 }
 
@@ -189,6 +180,7 @@
   gap: 10px;
   max-height: 500px;
   overflow-y: auto; /* scroll if many thumbnails */
+  margin-top: 70px;
 }
 
 .images-section .thumbnails .thumbnail {
@@ -207,10 +199,6 @@
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
-.images-section .thumbnails .thumbnail.active {
-  border-color: rgb(175, 175, 175);
-}
-
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
@@ -218,18 +206,6 @@
     flex-direction: column;
     padding: 15px;
     gap: 20px;
-  }
-
-  .images-section {
-    justify-content: center;
-    width: 100%;
-  }
-
-  .images-section img {
-    width: 100%;
-    max-width: 320px;
-    height: auto;
-    border-radius: 6px;
   }
 
   .info-section h1 {
