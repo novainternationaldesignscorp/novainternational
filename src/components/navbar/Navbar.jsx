@@ -54,10 +54,10 @@ const Navbar = () => {
         {
           heading: "New & Trending >",
           links: [
-            { title: "New Arrivals In Women", path: "#" },
-            { title: "Contemporary Trending", path: "#" },
-            { title: "New Fashion Designs", path: "#" },
-            { title: "Trending Colors Designs", path: "#" },
+            { title: "New Arrivals In Women", path: "/products" },
+            { title: "Contemporary Trending", path: "/products" },
+            { title: "New Fashion Designs", path: "/products" },
+            { title: "Trending Colors Designs", path: "/products" },
           ],
         },
       ],
@@ -106,10 +106,10 @@ const Navbar = () => {
         {
           heading: "New & Trending >",
           links: [
-            { title: "New Arrivals In Electronics", path: "/category/electronics" },
-            { title: "Contemporary Trending", path: "/category/electronics" },
-            { title: "New Electronics Designs", path: "/category/electronics" },
-            { title: "Trending Colors Designs", path: "/category/electronics" },
+            { title: "New Arrivals In Electronics", path: "/products" },
+            { title: "Contemporary Trending", path: "/products" },
+            { title: "New Electronics Designs", path: "/products" },
+            { title: "Trending Colors Designs", path: "/products" },
           ],
         },
       ],
@@ -121,8 +121,8 @@ const Navbar = () => {
         {
           heading: "Bags And Accessories >",
           links: [
-            { title: "Jute Bags", path: "/product/jute-bag" },
-            { title: "Evening Designer Bags", path: "/category/accessories/clutch" },
+            { title: "Jute Bag", path: "/category/accessories/jute-bag" },
+            { title: "Evening Designer Bags", path: "/category/accessories/bags" },
             { title: "Designer Bags", path: "/category/accessories" },
           ],
         },
@@ -150,10 +150,10 @@ const Navbar = () => {
         {
           heading: "New & Trending >",
           links: [
-            { title: "New Arrivals In Churas with Kaliras", path: "/category/wedding-gifts" },
-            { title: "Contemporary Trending", path: "/category/wedding-gifts" },
-            { title: "New Fashion Designs", path: "/category/wedding-gifts" },
-            { title: "Trending Colors Designs", path: "/category/wedding-gifts" },
+            { title: "New Arrivals In Churas with Kaliras", path: "/products" },
+            { title: "Contemporary Trending", path: "/products" },
+            { title: "New Fashion Designs", path: "/products" },
+            { title: "Trending Colors Designs", path: "/products" },
           ],
         },
       ],
@@ -184,9 +184,9 @@ const Navbar = () => {
         {
           heading: "Business To Business >",
           links: [
-            { title: "Investor Relations", path: "#" },
+            { title: "Investor Relations", path: "/investor-relations" },
             { title: "Inventory Details", path: "#" },
-            { title: "Digital Purchase Order", path: "#" },
+            { title: "Digital Purchase Order", path: "/digital-purchase-order" },
             { title: "Latest Updates", path: "#" },
           ],
         },

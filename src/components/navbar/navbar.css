@@ -174,3 +174,101 @@
   color: #000;
   text-decoration: underline;
 }
+/* ---------------- Mobile Styles ---------------- */
+@media (max-width: 768px) {
+
+  /* Top nav adjustments */
+  .top-nav .container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 16px;
+  }
+
+  .top-nav ul {
+    margin-left: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+  }
+
+  /* Main navbar */
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 10px 16px;
+  }
+
+  /* Hamburger button (you’ll need to add this in HTML) */
+  .menu-toggle {
+    display: block;
+    cursor: pointer;
+    font-size: 22px;
+    color: white;
+    margin-left: auto;
+  }
+
+  /* Hide menu by default */
+  .menu {
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0;
+    gap: 20px;
+    display: none;
+  }
+
+  /* Show when active (toggle with JS) */
+  .menu.active {
+    display: flex;
+  }
+
+  .menu-item {
+    width: 100%;
+  }
+
+  .menu-title {
+    display: block;
+    padding: 10px 0;
+    width: 100%;
+  }
+
+  /* Mega menu becomes stacked */
+  .mega-menu {
+    position: static;
+    width: 100%;
+    padding: 10px 0;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: none;
+    border-top: none;
+
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    display: none;
+  }
+
+  /* Show submenu when parent active */
+  .menu-item.active .mega-menu {
+    display: flex;
+  }
+
+  .mega-section {
+    min-width: 100%;
+  }
+
+  .mega-section h4 {
+    font-size: 13px;
+  }
+
+  .mega-section li a {
+    font-size: 13px;
+  }
+
+  /* Cart icon scaling */
+  .cart-count {
+    padding: 15px;
+    background-size: contain;
+  }
+}

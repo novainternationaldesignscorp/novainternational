@@ -4,7 +4,7 @@ import "./CSS/termsconditions.css";
 const TermsConditions = () => {
   return (
     <div className="terms-container">
-      <h1>Nova International Designs</h1>
+      <h1>Nova International Designs Corporation</h1>
       <h2>Terms & Conditions</h2>
 
       <p className="terms-subtitle">
@@ -20,12 +20,12 @@ const TermsConditions = () => {
       <section>
         <h3>1. Acceptance Terms</h3>
         <p>
-          By accessing or using the Nova International Designs platform
+          By accessing or using the Nova International Designs Corporation platform
           ("Platform") at www.novainternationaldesigns.com, you ("User" or
           "Buyer") agree to be bound by these Terms and Conditions ("Terms").
           If you do not agree to these Terms, you may not use our Platform.
           These Terms constitute a legally binding agreement between you and
-          Nova International Designs.
+          Nova International Designs Corporation.
         </p>
       </section>
 
@@ -33,7 +33,7 @@ const TermsConditions = () => {
         <h3>2. Service Description</h3>
 
         <p>
-          Nova International Designs operates a business-to-business (B2B)
+          Nova International Designs Corporation operates a business-to-business (B2B)
           e-commerce platform that allows registered buyers to browse,
           select, and purchase apparel and related products.
         </p>
@@ -76,7 +76,7 @@ const TermsConditions = () => {
 
         <h4>3.3 Account Termination</h4>
         <p>
-          Nova International Designs reserves the right to suspend or
+          Nova International Designs Corporation reserves the right to suspend or
           terminate accounts that violate these Terms, engage in fraudulent
           activity, or remain inactive for extended periods.
         </p>
@@ -221,7 +221,7 @@ const TermsConditions = () => {
 
         <p>
           You agree to indemnify and hold harmless Nova International
-          Designs and its officers, employees, and agents from any claims
+          Designs Corporation and its officers, employees, and agents from any claims
           arising from your use of the Platform.
         </p>
       </section>
@@ -231,7 +231,7 @@ const TermsConditions = () => {
 
         <h4>12.1 Governing Law</h4>
         <p>
-          These Terms are governed by the laws of the State of New Jersey.
+          These Terms are governed by the laws of the State of Illinois.
         </p>
 
         <h4>12.2 Dispute Resolution</h4>
@@ -250,7 +250,7 @@ const TermsConditions = () => {
         <h3>13. Changes to Terms</h3>
 
         <p>
-          Nova International Designs reserves the right to modify these
+          Nova International Designs Corporation reserves the right to modify these
           Terms at any time. Continued use of the Platform after updates
           constitutes acceptance of the revised Terms.
         </p>
@@ -260,7 +260,7 @@ const TermsConditions = () => {
         <h3>14. Contact Information</h3>
 
         <ul>
-          <li>Nova International Designs</li>
+          <li>Nova International Designs Corporation</li>
           <li>Email: <a href="mailto:info@novainternationaldesigns.com">info@novainternationaldesigns.com</a></li>
           <li>Website: <a href="http://www.novainternationaldesigns.com">www.novainternationaldesigns.com</a></li>
         </ul>

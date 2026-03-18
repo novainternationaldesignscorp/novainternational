@@ -20,7 +20,7 @@ const Footer = () => {
         <div className="footer-col">
           <h4>My Account</h4>
           <ul>
-            <li><a href="signin">Sign In</a></li>         
+            <li><a href="/signin">Sign In</a></li>         
             <li><a href="#">Gift Cards</a></li>
            
           </ul>

@@ -18,6 +18,8 @@ import PrivacyNotice from "./pages/PrivacyNotice.jsx";
 import LegalNotice from "./pages/LegalNotice.jsx";
 import TermsConditions from "./pages/TermsConditions.jsx";
 
+import InvestorRelations from "./pages/InvestorRelations.jsx";
+
 import Category from "./pages/Category.jsx";
 import Product from "./features/products/Product.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
@@ -50,6 +52,9 @@ function App() {
         <Route path="/privacynotice" element={<PrivacyNotice />} />
         <Route path="/legalnotice" element={<LegalNotice />} />
         <Route path="/termsconditions" element={<TermsConditions />} />
+
+        <Route path="/investor-relations" element={<InvestorRelations />} />
+
 
         <Route path="/products" element={<Product />} />
         <Route path="/product/:slug" element={<ProductDetails />} />

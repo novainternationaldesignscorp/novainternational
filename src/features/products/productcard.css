@@ -1,3 +1,26 @@
+/* ---- PAGE CONTAINER ---- */
+.product-page {
+  padding: 40px 5%;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f0f2f5;
+}
+
+.product-page h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 1.5rem;
+  color: #222;
+}
+
+/* ---- GRID LAYOUT ---- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 products in one row */
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* ---- PRODUCT CARD ---- */
 .product-card {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -9,30 +32,49 @@
   gap: 10px;
 }
 
-.product-image,.product-name {
-  cursor: pointer;
-}
-
 .product-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* ---- IMAGE & NAME CURSOR ---- */
+.product-image,
+.product-name {
+  cursor: pointer;
+}
+
+/* ---- PRODUCT IMAGE ---- */
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.product-card img:hover {
+  transform: scale(1.05);
+}
+
+/* ---- PRODUCT NAME ---- */
 .product-card h3 {
   font-size: 20px;
   margin: 5px 0;
 }
 
+/* ---- PRODUCT PRICE ---- */
 .product-card .price {
   color: #df360c;
   margin: 5px 0;
+  font-weight: bold;
 }
 
+/* ---- PRODUCT CATEGORY ---- */
 .product-card .category {
   color: #666;
   font-size: 14px;
 }
 
-/* Action Buttons */
+/* ---- ACTION BUTTONS ---- */
 .card-actions {
   display: flex;
   gap: 10px;
@@ -50,11 +92,12 @@
   border: none;
   background-color: #000;
   color: #fff;
+  transition: background-color 0.2s;
 }
+
 .add-po-btn:hover {
   background-color: #333;
 }
-
 
 .buy-now-btn {
   border: 1px solid #df360c;
@@ -63,6 +106,30 @@
 
 .buy-now-btn:hover {
   background-color: #df360c;
-  color:white
+  color: #fff;
 }
 
+/* ---- RESPONSIVE GRID ---- */
+@media (max-width: 1500px) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+}
