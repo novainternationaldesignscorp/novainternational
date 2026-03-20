@@ -7,6 +7,12 @@
   color: #333;
 }
 
+.logo-heading {
+  display: block;
+  margin: 0 auto 10px;
+  width: 200px;
+}
+
 .terms-container h1 {
   text-align: center;
   font-size: 32px;

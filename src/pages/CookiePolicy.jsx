@@ -4,7 +4,8 @@ import "./CSS/cookiepolicy.css";
 const CookiePolicy = () => {
   return (
     <div className="cookie-container">
-      <h1>Nova International Designs</h1>
+      <img src="images/logo.png" alt="Nova International Designs Logo" className="logo-heading"></img>
+      <h1>Nova International Designs Corporation</h1>
       <h2>Cookie Policy</h2>
 
       <p className="effective-date">
@@ -16,7 +17,7 @@ const CookiePolicy = () => {
       <section>
         <h3>1. Introduction</h3>
         <p>
-          This Cookie Policy explains how Nova International Designs ("we",
+          This Cookie Policy explains how Nova International Designs Corporation ("we",
           "us," or "our") uses cookies and similar technologies on our website
           at www.novainternationaldesigns.com. This policy should be read
           together with our Privacy Policy.
@@ -234,19 +235,8 @@ const CookiePolicy = () => {
         </p>
       </section>
 
-      <section>
-        <h3>9. Contact Us</h3>
-
-        <p>
-          If you have any questions about how we use cookies, please contact us:
-        </p>
-
-        <ul>
-          <li>Nova International Designs</li>
-          <li>Email: <a href="mailto:info@novainternationaldesigns.com">info@novainternationaldesigns.com</a></li>
-          <li>Website: <a href="http://www.novainternationaldesigns.com">www.novainternationaldesigns.com</a></li>
-        </ul>
-      </section>
+        <p>Email - info@novainternationaldesigns.com</p>
+        <p>www.novainternationaldesigns.com</p>
 
       <p className="policy-footer">
         This Cookie Policy is effective as of March 1, 2026.

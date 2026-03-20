@@ -4,6 +4,7 @@ import "./CSS/termsconditions.css";
 const TermsConditions = () => {
   return (
     <div className="terms-container">
+      <img src="images/logo.png" alt="Nova International Designs Logo" className="logo-heading"></img>
       <h1>Nova International Designs Corporation</h1>
       <h2>Terms & Conditions</h2>
 
@@ -256,15 +257,7 @@ const TermsConditions = () => {
         </p>
       </section>
 
-      <section>
-        <h3>14. Contact Information</h3>
-
-        <ul>
-          <li>Nova International Designs Corporation</li>
-          <li>Email: <a href="mailto:info@novainternationaldesigns.com">info@novainternationaldesigns.com</a></li>
-          <li>Website: <a href="http://www.novainternationaldesigns.com">www.novainternationaldesigns.com</a></li>
-        </ul>
-      </section>
+      <p>Email - info@novainternationaldesigns.com</p>
     </div>
   );
 };

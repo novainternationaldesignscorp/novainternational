@@ -4,7 +4,7 @@ import "./CSS/legalnotice.css";
 const LegalNotice = () => {
   return (
     <div className="legal-container">
-
+      <img src="images/logo.png" alt="Nova International Designs Logo" className="logo-heading"></img>
       <h1>Legal Notice</h1>
       <p className="update">Last updated: March 2026</p>
 
@@ -89,15 +89,8 @@ const LegalNotice = () => {
         Continued use of the Site constitutes acceptance of the revised terms.
       </p>
 
-      <h2>6. Contact</h2>
-
-      <p>For questions or concerns regarding this Legal Notice, please contact:</p>
-
-      <div className="contact-box">
-        <p><strong>Nova International Designs Corporation</strong></p>
-        <p>Email: <a href="mailto:info@novainternationaldesigns.com">info@novainternationaldesigns.com</a></p>
-        <p>Website: <a href="https://www.novainternationaldesigns.com" target="_blank" rel="noopener noreferrer">www.novainternationaldesigns.com</a></p>
-      </div>
+        <p>Email - info@novainternationaldesigns.com</p>
+        <p>www.novainternationaldesigns.com</p>
 
     </div>
   );

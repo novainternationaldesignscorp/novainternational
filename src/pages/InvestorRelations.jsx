@@ -27,11 +27,11 @@ function InvestorRelations() {
 
         <p>
           It combines strong business sense with a modern, secure B2B model,
-          creating a powerful blend of buying office and e-commerce platform.
+          creating a powerful blend with buying office and e-commerce platform.
         </p>
 
         <p>
-          As a women-owned business, Nova brings a unique perspective to the B2B
+          As a women-owned business, Nova International Designs Corpororation brings a unique perspective to the B2B
           supply chain.
         </p>
       </section>
@@ -59,26 +59,10 @@ function InvestorRelations() {
       <section className="investor-section">
         <h3>Investment & Contact</h3>
         <p>
-          Interested in investing or learning more? Reach out to us:
+          Interested in investing or learning more?
         </p>
-
-        <div className="investor-contact">
-          <a
-            href="mailto:info@novainternationaldesigns.com"
-            className="investor-btn"
-          >
-            Email Us
-          </a>
-
-          <a
-            href="http://www.novainternationaldesigns.com"
-            target="_blank"
-            rel="noreferrer"
-            className="investor-link"
-          >
-            Visit Website
-          </a>
-        </div>
+      <p>Email - info@novainternationaldesigns.com</p>
+      <p>www.novainternationaldesigns.com</p>
       </section>
 
     </div>

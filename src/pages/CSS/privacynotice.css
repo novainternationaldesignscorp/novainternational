@@ -7,6 +7,12 @@
   color: #333;
 }
 
+.logo-heading {
+  display: block;
+  margin: 0 auto 10px;
+  width: 200px;
+}
+
 .privacy-container h1 {
   font-size: 36px;
   margin-bottom: 10px;
