@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Product.css";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function ProductPage() {
   const [products, setProducts] = useState([]);
@@ -28,11 +29,7 @@ function ProductPage() {
             {/* Wrap image in Link */}
             {product.images && product.images[0] && (
               <Link to={`/product/${product.slug || product._id}`}>
-                <img
-                  className="product-image"
-                  src={product.images[0]}
-                  alt={product.name}
-                />
+              <img className="product-image" src={product.images && product.images[0] ? getImageUrl(product.images[0]) : "/images/no-image.png" }alt={product.name} />
               </Link>
             )}
 

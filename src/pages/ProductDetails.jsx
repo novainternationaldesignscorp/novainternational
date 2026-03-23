@@ -4,6 +4,7 @@ import { UserContext } from "../context/UserContext";
 import { useGuest } from "../context/GuestContext";
 import { usePO } from "../context/PurchaseOrderContext.jsx";
 import "./CSS/ProductDetails.css";
+import { getImageUrl } from "../utils/getImageUrl";
 
 function ProductDetails() {
   const { slug } = useParams();
@@ -16,12 +17,19 @@ function ProductDetails() {
   const [orderItems, setOrderItems] = useState([]);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null); // new main image state
+  const [selectedImage, setSelectedImage] = useState(null);
   const [showAddedBar, setShowAddedBar] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [validationError, setValidationError] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+
+  // ✅ helper for Cloudinary
+  const getVariantImageValue = (variant) =>
+    variant?.image_public_id ||
+    variant?.images_public_id ||
+    variant?.image ||
+    null;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -51,15 +59,27 @@ function ProductDetails() {
             ? [...new Set(variants.map((v) => v.size).filter(Boolean))]
             : data.sizes || [];
 
-        const firstImage = data.images?.[0] || null;
+        // ✅ Cloudinary first image
+        const firstImage =
+          data.images_public_id?.[0] ||
+          variants[0]?.image_public_id ||
+          data.images?.[0] ||
+          null;
+
         const imageMatchedVariant = firstImage
-          ? variants.find((v) => v.image && v.image === firstImage)
+          ? variants.find(
+              (v) =>
+                getVariantImageValue(v) === firstImage ||
+                v.image === firstImage
+            )
           : null;
-        const defaultColor = imageMatchedVariant?.color || colors?.[0] || null;
+
+        const defaultColor =
+          imageMatchedVariant?.color || colors?.[0] || null;
         const defaultSize = sizes?.[0] || null;
 
         setProduct({ ...data, colors, sizes });
-        setSelectedImage(firstImage); // set default main image
+        setSelectedImage(firstImage);
 
         setOrderItems([
           {
@@ -70,9 +90,13 @@ function ProductDetails() {
         ]);
 
         setSelectedColor(defaultColor);
-        const initVariant = (data.variants || []).find(
-          (v) => v.color === defaultColor && (defaultSize ? v.size === defaultSize : true)
+
+        const initVariant = variants.find(
+          (v) =>
+            v.color === defaultColor &&
+            (defaultSize ? v.size === defaultSize : true)
         );
+
         setSelectedVariant(initVariant || null);
       } catch (err) {
         setError(err.message);
@@ -84,10 +108,15 @@ function ProductDetails() {
     fetchProduct();
   }, [slug]);
 
-  const hasColorVariants = product?.variants && product.variants.length > 0;
+  const hasColorVariants =
+    product?.variants && product.variants.length > 0;
+
   const variantHasSizes =
     (product?.sizes && product.sizes.length > 0) ||
-    (hasColorVariants && product.variants.some((v) => v.size && v.size.trim().length > 0));
+    (hasColorVariants &&
+      product.variants.some(
+        (v) => v.size && v.size.trim().length > 0
+      ));
 
   const getVariantColors = () => {
     if (product?.variants && product.variants.length > 0) {
@@ -108,7 +137,9 @@ function ProductDetails() {
     if (!product?.variants) return null;
     return product.variants.find((v) => {
       const colorMatch = v.color === color;
-      const sizeMatch = size ? v.size === size : !v.size || v.size === "";
+      const sizeMatch = size
+        ? v.size === size
+        : !v.size || v.size === "";
       return colorMatch && sizeMatch;
     });
   };
@@ -134,7 +165,9 @@ function ProductDetails() {
 
     for (const cand of candidates) {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/slug/${cand}`);
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/products/slug/${cand}`
+        );
         if (res.ok) {
           navigate(`/product/${cand}`);
           return;
@@ -142,10 +175,10 @@ function ProductDetails() {
       } catch (e) {}
     }
 
-    // fallback: update color in-place
     updateOrderItem(0, "color", targetColor);
     const variant = findVariant(targetColor, orderItems[0]?.size);
-    if (variant?.image) setSelectedImage(variant.image);
+    const img = getVariantImageValue(variant);
+    if (img) setSelectedImage(img);
   };
 
   const updateOrderItem = (index, field, value) => {
@@ -161,12 +194,15 @@ function ProductDetails() {
       setSelectedColor(value);
       const v = findVariant(value, updated[index].size || null);
       setSelectedVariant(v || null);
-      if (v?.image) setSelectedImage(v.image);
+
+      const img = getVariantImageValue(v);
+      if (img) setSelectedImage(img);
     }
 
     if (field === "size") {
       const v = findVariant(updated[index].color, value);
-      if (v?.image) setSelectedImage(v.image);
+      const img = getVariantImageValue(v);
+      if (img) setSelectedImage(img);
       setSelectedVariant(v || null);
     }
 
@@ -191,12 +227,17 @@ function ProductDetails() {
     setValidationError("");
   };
 
-  const totalQuantity = orderItems.reduce((acc, item) => acc + Number(item.quantity || 0), 0);
+  const totalQuantity = orderItems.reduce(
+    (acc, item) => acc + Number(item.quantity || 0),
+    0
+  );
 
   const validateTotalQty = () => {
     const minQty = product?.minQty ?? 1;
     if (totalQuantity < minQty) {
-      setValidationError(`Minimum total order quantity is ${minQty}. You selected: ${totalQuantity}`);
+      setValidationError(
+        `Minimum total order quantity is ${minQty}. You selected: ${totalQuantity}`
+      );
       setShowPopup(true);
       return false;
     }
@@ -225,7 +266,11 @@ function ProductDetails() {
         color: item.color || null,
         size: item.size || null,
         sku: variant?.sku || null,
-        image: variant?.image || product.images?.[0] || null,
+        image: getImageUrl(
+          getVariantImageValue(variant) ||
+            product.images_public_id?.[0] ||
+            product.images?.[0]
+        ),
       };
     });
 
@@ -241,19 +286,12 @@ function ProductDetails() {
         body: JSON.stringify({ items: poData }),
       });
 
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || "Failed to add to Purchase Order");
-      }
-
-      const data = await res.json();
-      console.log("PO Response:", data);
+      if (!res.ok) throw new Error("Failed");
 
       poData.forEach((itm) => addToPO(itm));
       setShowAddedBar(true);
     } catch (err) {
-      console.error("Error adding PO:", err);
-      alert("Error adding to Purchase Order: " + err.message);
+      alert("Error adding to Purchase Order");
     }
   };
 
@@ -264,23 +302,35 @@ function ProductDetails() {
   return (
     <div className="product-details">
 
-    <div className="images-section">
-       <div className="thumbnails">
-        {product.images?.map((img, idx) => (
+      <div className="images-section">
+        <div className="thumbnails">
+          {(product.images_public_id?.length
+            ? product.images_public_id
+            : product.images || []
+          ).map((img, idx) => (
+            <img
+              key={idx}
+              src={getImageUrl(img)}
+              className={
+                selectedImage === img ? "thumbnail active" : "thumbnail"
+              }
+              onClick={() => setSelectedImage(img)}
+              alt=""
+            />
+          ))}
+        </div>
+
+        <div className="main-image">
           <img
-            key={idx}
-            src={img}
-            className={selectedImage === img ? "thumbnail active" : "thumbnail"}
-            onClick={() => setSelectedImage(img)}
-            alt={`Thumbnail ${idx + 1}`}
+            src={
+              selectedImage
+                ? getImageUrl(selectedImage)
+                : "/images/no-image.png"
+            }
+            alt={product.name}
           />
-        ))}
+        </div>
       </div>
-      <div className="main-image">
-        <img src={selectedImage || defaultImage} alt={product.name} />
-      </div>
-     
-    </div>
 
       <div className="info-section">
         <h1>

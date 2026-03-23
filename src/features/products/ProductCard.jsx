@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./productcard.css";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
@@ -38,11 +39,12 @@ function ProductCard({ product }) {
       price: product.price,
       color: selectedColor,
       quantity: qty,
-      image: product.images?.[0] || null, // Include thumbnail image
+      image: product.images?.[0]
+        ? getImageUrl(product.images[0])
+        : null,
     };
 
     console.log("Add to Purchase Order:", poItem);
-    // TODO: send to context / redux / API
   };
 
   const handleBuyNow = () => {
@@ -54,7 +56,9 @@ function ProductCard({ product }) {
       price: product.price,
       color: selectedColor,
       quantity: qty,
-      image: product.images?.[0] || null, // Include thumbnail image
+      image: product.images?.[0]
+        ? getImageUrl(product.images[0])
+        : null,
     };
 
     navigate("/checkout", { state: order });
@@ -63,15 +67,29 @@ function ProductCard({ product }) {
   return (
     <div className="product-card">
       <img
-        src={product.images?.[0] || "/images/no-image.png"}
+        src={
+          product.images?.[0]
+            ? getImageUrl(product.images[0])
+            : "/images/no-image.png"
+        }
         alt={product.name}
         className="product-image"
-        onClick={() => navigate(`/product/${product.slug || product._id}`)}
+        onClick={() =>
+          navigate(`/product/${product.slug || product._id}`)
+        }
       />
-      <h3 className="product-name" onClick={() => navigate(`/product/${product.slug || product._id}`)}>{product.name}</h3>
+
+      <h3
+        className="product-name"
+        onClick={() =>
+          navigate(`/product/${product.slug || product._id}`)
+        }
+      >
+        {product.name}
+      </h3>
+
       <h4>Style No: {product.styleNo}</h4>
       <p className="price">USD {product.price}</p>
-
     </div>
   );
 }
