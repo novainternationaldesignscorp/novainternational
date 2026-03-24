@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="footer-col">
           <h4>Customer Service</h4>
           <ul>
-            <li><a href="cookiepolicy">Cookie Policy</a></li>
+            {/* <li><a href="cookiepolicy">Cookie Policy</a></li> */}
             <li><a href="privacynotice">Privacy Notice</a></li>
             <li><a href="legalnotice">Legal Notice</a></li>
             <li><a href="termsconditions">Terms & Conditions</a></li>
