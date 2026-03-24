@@ -7,11 +7,18 @@ function ProductPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const getPrimaryImage = (product) =>
+    product.images_public_id?.[0] ||
+    product.images?.[0] ||
+    product.variants?.[0]?.images_public_id ||
+    product.variants?.[0]?.image ||
+    null;
+
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/products`)
       .then(res => res.json())
       .then(data => {
-        setProducts(data); // array of products
+        setProducts(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -27,11 +34,13 @@ function ProductPage() {
         {products.map((product) => (
           <div className="product-card" key={product._id}>
             {/* Wrap image in Link */}
-            {product.images && product.images[0] && (
-              <Link to={`/product/${product.slug || product._id}`}>
-              <img className="product-image" src={product.images && product.images[0] ? getImageUrl(product.images[0]) : "/images/no-image.png" }alt={product.name} />
-              </Link>
-            )}
+            <Link to={`/product/${product.slug || product._id}`}>
+              <img
+                className="product-image"
+                src={getImageUrl(getPrimaryImage(product))}
+                alt={product.name}
+              />
+            </Link>
 
             {/* Product name can also be clickable */}
             <Link to={`/product/${product.slug || product._id}`} className="product-name">

@@ -440,7 +440,7 @@ const Checkout = () => {
                 item.image ||
                 item.imageUrl ||
                 item.thumbnail ||
-                item.images?.[0] ||
+                item.images_public_id?.[0] ||
                 "/images/no-image.png";
               const productName = item.name || item.description || "Product";
 

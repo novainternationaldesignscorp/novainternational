@@ -4,7 +4,7 @@ function AddProduct() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [images, setImages] = useState([]); // URLs from upload
+  const [imagesPublicId, setImagesPublicId] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +15,7 @@ function AddProduct() {
     { 
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, description, price, images })
+      body: JSON.stringify({ name, description, price, images_public_id: imagesPublicId })
     });
 
     const data = await res.json();
@@ -59,9 +59,9 @@ function AddProduct() {
           id="add-product-images"
           name="productImages"
           type="text"
-          placeholder="Images URLs (comma separated)"
-          value={images.join(",")}
-          onChange={(e) => setImages(e.target.value.split(","))}
+          placeholder="Image public IDs (comma separated)"
+          value={imagesPublicId.join(",")}
+          onChange={(e) => setImagesPublicId(e.target.value.split(","))}
           required
         />
         <br />

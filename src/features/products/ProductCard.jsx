@@ -5,6 +5,12 @@ import { getImageUrl } from "../../utils/getImageUrl";
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
+  const primaryImage =
+    product.images_public_id?.[0] ||
+    product.images?.[0] ||
+    product.variants?.[0]?.images_public_id ||
+    product.variants?.[0]?.image ||
+    null;
 
   // Product-specific minimum quantity (fallback to 1)
   const MIN_QTY = product.minQty || 1;
@@ -39,8 +45,8 @@ function ProductCard({ product }) {
       price: product.price,
       color: selectedColor,
       quantity: qty,
-      image: product.images?.[0]
-        ? getImageUrl(product.images[0])
+      image: primaryImage
+        ? getImageUrl(primaryImage)
         : null,
     };
 
@@ -56,8 +62,8 @@ function ProductCard({ product }) {
       price: product.price,
       color: selectedColor,
       quantity: qty,
-      image: product.images?.[0]
-        ? getImageUrl(product.images[0])
+      image: primaryImage
+        ? getImageUrl(primaryImage)
         : null,
     };
 
@@ -68,8 +74,8 @@ function ProductCard({ product }) {
     <div className="product-card">
       <img
         src={
-          product.images?.[0]
-            ? getImageUrl(product.images[0])
+          primaryImage
+            ? getImageUrl(primaryImage)
             : "/images/no-image.png"
         }
         alt={product.name}

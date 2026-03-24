@@ -61,7 +61,7 @@ export default function PurchaseOrderForm({ items }) {
                 item.image ||
                 item.imageUrl ||
                 item.thumbnail ||
-                item.images?.[0] ||
+                item.images_public_id?.[0] ||
                 null,
               total: (item.quantity ?? item.qty ?? 0) * (item.price || 0),
             };
@@ -175,7 +175,7 @@ export default function PurchaseOrderForm({ items }) {
           : Number.isFinite(Number(product?.price))
             ? Number(product.price)
             : item.price;
-        const resolvedImage = variant?.image || product?.images?.[0] || item.image || null;
+        const resolvedImage = variant?.images_public_id || product?.images_public_id?.[0] || item.image || null;
 
         updated[index].productId = resolvedProductId;
         updated[index].styleNo = resolvedStyleNo || "";

@@ -24,12 +24,54 @@ function ProductDetails() {
   const [validationError, setValidationError] = useState("");
   const [showPopup, setShowPopup] = useState(false);
 
-  // ✅ helper for Cloudinary
-  const getVariantImageValue = (variant) =>
-    variant?.image_public_id ||
-    variant?.images_public_id ||
-    variant?.image ||
-    null;
+  // ✅ SAFE IMAGE HELPERS (ORDER FIXED)
+  const getSafeImage = (img) => {
+    if (!img) return null;
+
+    if (Array.isArray(img)) {
+      return img[0] || null;
+    }
+
+    if (typeof img === "object") {
+      return (
+        img.images_public_id ||
+        img.image_public_id ||
+        img.public_id ||
+        img.secure_url ||
+        img.url ||
+        img.image ||
+        null
+      );
+    }
+
+    return img;
+  };
+
+  const getVariantImageValue = (variant) => {
+    if (!variant) return null;
+    return getSafeImage(
+      variant.images_public_id ||
+      variant.image_public_id ||
+      variant.image ||
+      null
+    );
+  };
+
+  const getProductImages = (item) => {
+    const productImages = (item?.images_public_id?.length
+      ? item.images_public_id
+      : item?.images?.length
+        ? item.images
+        : [])
+      .map((image) => getSafeImage(image))
+      .filter(Boolean);
+
+    if (productImages.length > 0) return productImages;
+
+    return (item?.variants || [])
+      .map((variant) => getVariantImageValue(variant))
+      .filter(Boolean);
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -59,18 +101,12 @@ function ProductDetails() {
             ? [...new Set(variants.map((v) => v.size).filter(Boolean))]
             : data.sizes || [];
 
-        // ✅ Cloudinary first image
-        const firstImage =
-          data.images_public_id?.[0] ||
-          variants[0]?.image_public_id ||
-          data.images?.[0] ||
-          null;
+        // ✅ FIXED IMAGE SELECTION
+        const firstImage = getProductImages(data)[0] || null;
 
         const imageMatchedVariant = firstImage
           ? variants.find(
-              (v) =>
-                getVariantImageValue(v) === firstImage ||
-                v.image === firstImage
+              (v) => getVariantImageValue(v) === firstImage
             )
           : null;
 
@@ -177,7 +213,11 @@ function ProductDetails() {
 
     updateOrderItem(0, "color", targetColor);
     const variant = findVariant(targetColor, orderItems[0]?.size);
-    const img = getVariantImageValue(variant);
+
+    const img =
+      getVariantImageValue(variant) ||
+      getProductImages(product)[0];
+
     if (img) setSelectedImage(img);
   };
 
@@ -195,14 +235,22 @@ function ProductDetails() {
       const v = findVariant(value, updated[index].size || null);
       setSelectedVariant(v || null);
 
-      const img = getVariantImageValue(v);
+      const img =
+        getVariantImageValue(v) ||
+        getProductImages(product)[0];
+
       if (img) setSelectedImage(img);
     }
 
     if (field === "size") {
       const v = findVariant(updated[index].color, value);
-      const img = getVariantImageValue(v);
+
+      const img =
+        getVariantImageValue(v) ||
+        getProductImages(product)[0];
+
       if (img) setSelectedImage(img);
+
       setSelectedVariant(v || null);
     }
 
@@ -268,8 +316,7 @@ function ProductDetails() {
         sku: variant?.sku || null,
         image: getImageUrl(
           getVariantImageValue(variant) ||
-            product.images_public_id?.[0] ||
-            product.images?.[0]
+            getProductImages(product)[0]
         ),
       };
     });
@@ -301,36 +348,34 @@ function ProductDetails() {
 
   return (
     <div className="product-details">
-
       <div className="images-section">
         <div className="thumbnails">
-          {(product.images_public_id?.length
-            ? product.images_public_id
-            : product.images || []
-          ).map((img, idx) => (
-            <img
-              key={idx}
-              src={getImageUrl(img)}
-              className={
-                selectedImage === img ? "thumbnail active" : "thumbnail"
-              }
-              onClick={() => setSelectedImage(img)}
-              alt=""
-            />
-          ))}
+          {getProductImages(product).map((img, idx) => (
+          <img
+            key={idx}
+            src={getImageUrl(img)}
+            className={
+              selectedImage === img ? "thumbnail active" : "thumbnail"
+            }
+            onClick={() => setSelectedImage(img)}
+            alt=""
+          />
+        ))}
         </div>
 
         <div className="main-image">
           <img
-            src={
-              selectedImage
-                ? getImageUrl(selectedImage)
-                : "/images/no-image.png"
-            }
+            src={getImageUrl(
+              selectedImage ||
+                getProductImages(product)[0] ||
+                getVariantImageValue(product.variants?.[0])
+            )}
             alt={product.name}
           />
         </div>
       </div>
+
+
 
       <div className="info-section">
         <h1>

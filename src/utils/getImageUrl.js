@@ -1,10 +1,25 @@
 const DEFAULT_CLOUDINARY_CLOUD_NAME = "djgz1kays";
 
-export function getImageUrl(imageValue, options = "") {
+export const getImageUrl = (imageValue, options = "") => {
   if (!imageValue) return "/images/no-image.png";
 
-  if (/^(https?:)?\/\//i.test(imageValue) || imageValue.startsWith("/")) {
-    return imageValue;
+  const normalizedValue =
+    typeof imageValue === "string"
+      ? imageValue
+      : imageValue.images_public_id ||
+        imageValue.image_public_id ||
+        imageValue.public_id ||
+        imageValue.secure_url ||
+        imageValue.url ||
+        null;
+
+  if (!normalizedValue) return "/images/no-image.png";
+
+  if (
+    /^(https?:)?\/\//i.test(normalizedValue) ||
+    normalizedValue.startsWith("/")
+  ) {
+    return normalizedValue;
   }
 
   const cloudName =
@@ -12,5 +27,5 @@ export function getImageUrl(imageValue, options = "") {
     import.meta.env.CLOUDINARY_CLOUD_NAME ||
     DEFAULT_CLOUDINARY_CLOUD_NAME;
 
-  return `https://res.cloudinary.com/${cloudName}/image/upload/${options ? `${options}/` : ""}${imageValue}`;
-}
+  return `https://res.cloudinary.com/${cloudName}/image/upload/${options ? `${options}/` : ""}${normalizedValue}`;
+};
