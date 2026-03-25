@@ -3,10 +3,10 @@ import "./billboard.css";
 
 const Billboard = () => {
   const slides = [
-    { type: "image", src: "/images/Blue-Dress-1-nova-international.jpg" },
-    { type: "image", src: "/images/Blue-Dress-2-nova-international.jpg" },  
-    { type: "image", src: "/images/brown-dress-1-nova-international.jpg" },
     { type: "image", src: "/images/brown-dress-2-nova-international.jpg" },
+    { type: "image", src: "/images/brown-dress-1-nova-international.jpg" },
+    { type: "image", src: "/images/Blue-Dress-1-nova-international.jpg" },
+    { type: "image", src: "/images/Blue-Dress-2-nova-international.jpg" }, 
     { type: "image", src: "/images/bladeless-fan-novainternationaldesigns.png" },
     { type: "image", src: "/images/Blue-Dress-3-nova-international.jpg" },
     { type: "image", src: "/images/golden-clutch.png" },
