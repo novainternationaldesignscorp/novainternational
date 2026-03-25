@@ -18,6 +18,14 @@ const TermsConditions = () => {
 
       <p className="website-link">www.novainternationaldesigns.com</p>
 
+            <p className="red-text">
+        Nova International Designs Corporation is a NO Show Business and is not directly or indirectly NOT linked with Video gaming or entertainment digitalization  and we do not accept any bitcoins or crypto or money with QR code scanning's
+      </p>
+
+      <p className="red-text">
+        We will only accept payments via credit or debit cards and by legal bank to bank wire transfers
+      </p>
+      
       <section>
         <h3>1. Acceptance Terms and Conditions</h3>
         <p>

@@ -39,6 +39,59 @@ const About = () => {
       <p>
         Contact Information: For Business inquiries or Questions you can email at: ritika@novainternationaldesigns.com
       </p>
+
+      <h2 className="team-heading">Meet Our Team</h2>
+
+      <table className="team-table">
+        <thead>
+          <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <img src="images/Ritika-photo.JPG" alt="Ritika Aurora" className="team-photo" />
+            </td>
+            <td>Ritika Aurora</td>
+            <td>Business Owner</td>
+            <td>
+              <a href="mailto:info@novainternationaldesigns.com">
+                info@novainternationaldesigns.com
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <img src="/images/Shila-photo.jpeg" alt="Shila Pattewar" className="team-photo" />
+            </td>
+            <td>Shila Pattewar</td>
+            <td>Software Developer</td>
+            <td>
+              <a href="mailto:info@novainternationaldesigns.com">
+                info@novainternationaldesigns.com
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <img src="/images/Kmohana-photo.jpg" alt="Krishna Mohana" className="team-photo" />
+            </td>
+            <td>Krishna Mohana</td>
+            <td>Cyber Security Engineer</td>
+            <td>
+              <a href="mailto:info@novainternationaldesigns.com">
+                info@novainternationaldesigns.com
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -38,7 +38,7 @@ const Navbar = () => {
             { title: "Womens Wear", path: "/category/fashion/women" },
             { title: "Coats and Jackets", path: "#" },
             { title: "Sweaters", path: "#" },
-            { title: "Tops", path: "#" },
+            { title: "Tops", path: "/category/fashion/women" },
             { title: "Dresses", path: "/category/fashion/women" },
           ],
         },
@@ -99,7 +99,7 @@ const Navbar = () => {
         {
           heading: "Kids Tech and Electronics >",
           links: [
-            { title: "Kids Robot", path: "/product/kids-robot" },
+            // { title: "Kids Robot", path: "/product/kids-robot" },
             { title: "Technologically Advanced Robots", path: "/product/technologically-advanced-robots" },
           ],
         },
@@ -144,13 +144,13 @@ const Navbar = () => {
         {
           heading: "Wedding Gifts >",
           links: [
-            { title: "Churas with Kaliras", path: "/category/wedding-gifts" },
+            { title: "Wedding Gift Box", path: "/category/wedding-gifts" },
           ],
         },
         {
           heading: "New & Trending >",
           links: [
-            { title: "New Arrivals In Churas with Kaliras", path: "/products" },
+            { title: "New Arrivals In Wedding Gift Box", path: "/products" },
             { title: "Contemporary Trending", path: "/products" },
             { title: "New Fashion Designs", path: "/products" },
             { title: "Trending Colors Designs", path: "/products" },
@@ -165,14 +165,14 @@ const Navbar = () => {
         {
           heading: "Nova Chocolates >",
           links: [
-            { title: "Milk Bars", path: "/category/nova-chocolates/milk-bar" },
-            { title: "Nova Specials", path: "/category/nova-chocolates" },
+            { title: "Chocolate Box", path: "/category/nova-chocolates/chocolate-box" },
+            { title: "Milk Bars", path: "/category/nova-chocolates/chocolate-bar" },
           ],
         },
         {
           heading: "New & Trending >",
           links: [
-            { title: "New Arrivals In Milk Bars", path: "/category/nova-chocolates" },
+            { title: "New Arrivals In Milk Bars", path: "/products" },
           ],
         },
       ],
@@ -186,7 +186,7 @@ const Navbar = () => {
           links: [
             { title: "Investor Relations", path: "/investor-relations" },
             { title: "Inventory Details", path: "#" },
-            { title: "Digital Purchase Order", path: "/digital-purchase-order" },
+            { title: "Digital Purchase Order", path: "#" },
             { title: "Latest Updates", path: "#" },
           ],
         },

@@ -19,6 +19,13 @@ function InvestorRelations() {
           women-owned buying office with an e-commerce business-to-business presence.
         </p>
 
+        <p className="red-text">
+          Nova International Designs Corporation is a NO Show Business and is not directly or indirectly NOT linked with Video gaming or entertainment digitalization  and we do not accept any bitcoins or crypto or money with QR code scanning's
+        </p>
+
+        <p className="red-text">
+          We will only accept payments via credit or debit cards and by legal bank to bank wire transfers
+        </p> 
         <p>
           The company specializes in Fashion and Electronics, supplying its own
           brand while partnering with other businesses.
