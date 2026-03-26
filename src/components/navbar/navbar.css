@@ -54,7 +54,7 @@
   color: rgb(0, 0, 0);
   padding: 20px;
   /* background-color: goldenrod; */
-  background-image: url(./../images/purchase-order-icon.jpg);
+  background-image: url(images/purchase-order-icon.jpg);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

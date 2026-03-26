@@ -298,7 +298,7 @@ export default function PurchaseOrderForm({ items }) {
   return (
       <div className="purchase-order-form">
         <div className="business-log-purchase"><img src="/images/logo.png" alt="Company Logo" /></div>
-        <h2>Purchase Order</h2>
+        <h2>Purchase Order Form</h2>
 
         <div className="po-left">
           <table className="po-table">

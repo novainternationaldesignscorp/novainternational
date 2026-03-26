@@ -516,7 +516,7 @@ const Checkout = () => {
             onClick={handleStripeCheckout}
             disabled={submitting || !orderData.length}
           >
-            {submitting ? "Redirecting..." : "Confirm Order"}
+            {submitting ? "Redirecting..." : "Confirm Purchase Order"}
           </button>
         </div>
       </div>

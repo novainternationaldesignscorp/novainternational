@@ -40,7 +40,7 @@ const About = () => {
         Contact Information: For Business inquiries or Questions you can email at: ritika@novainternationaldesigns.com
       </p>
 
-      <h2 className="team-heading">Meet Our Team</h2>
+      <h2 className="team-heading">Meet The Team</h2>
 
       <table className="team-table">
         <thead>
@@ -48,7 +48,8 @@ const About = () => {
             <th>Photo</th>
             <th>Name</th>
             <th>Role</th>
-            <th>Email</th>
+            <th>Profile</th>
+            <th>Linked In</th>
           </tr>
         </thead>
         <tbody>
@@ -57,12 +58,9 @@ const About = () => {
               <img src="images/Ritika-photo.JPG" alt="Ritika" className="team-photo" />
             </td>
             <td>Ritika</td>
-            <td>Business Owner</td>
-            <td>
-              <a href="mailto:info@novainternationaldesigns.com">
-                info@novainternationaldesigns.com
-              </a>
-            </td>
+            <td>Founder and Owner for Nova International Designs Corporation</td>
+            <td>Ritika has over 15 plus years experience in Various Business lines and has completed her Masters Degree in International Business Management .</td>
+            <td>Linked In : https://www.linkedin.com/in/ritika-aurora-81797b35</td>
           </tr>
 
           <tr>
@@ -71,11 +69,8 @@ const About = () => {
             </td>
             <td>Shila Pattewar</td>
             <td>Software Developer</td>
-            <td>
-              <a href="mailto:info@novainternationaldesigns.com">
-                info@novainternationaldesigns.com
-              </a>
-            </td>
+            <td>Shila has extensive experience in software development and has contributed to various projects within Nova International Designs Corporation.</td>
+            <td>Linked In : https://www.linkedin.com/in/shila-front-end-developer/ </td>
           </tr>
 
           <tr>
@@ -84,11 +79,8 @@ const About = () => {
             </td>
             <td>Krishna Mohana</td>
             <td>Cyber Security Engineer</td>
-            <td>
-              <a href="mailto:info@novainternationaldesigns.com">
-                info@novainternationaldesigns.com
-              </a>
-            </td>
+            <td>Krishna has extensive experience in cyber security and that helps ensure the safety and security in Nova International Designs Corporation.</td>
+            <td>Linked In : https://www.linkedin.com/in/mohana-krishna-chaganti-914823249</td>
           </tr>
         </tbody>
       </table>

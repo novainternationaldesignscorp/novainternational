@@ -69,7 +69,7 @@ const Navbar = () => {
         {
           heading: "Vacuum Sealers >",
           links: [
-            { title: "Zip Lock Vacuum Sealers", path: "/product/zip-lock-vacuum-sealers" },
+            { title: "Vacuum Sealing Machine", path: "/product/vacuum-sealing-machine" },
             // { title: "Kitchenware Vacuum Sealers", path: "/product/kitchenware-vacuum-sealers" },
             // { title: "Technologically Advance Vacuum Sealers", path: "/product/technologically-advance-vacuum-sealers" },
           ],
@@ -77,7 +77,7 @@ const Navbar = () => {
         {
           heading: "Speakers & Audio >",
           links: [
-            { title: "Bluetooth & Wireless Speakers", path: "/product/bluetooth-wireless-speakers" },
+            { title: "Campfire Light And Musical Speaker", path: "/product/campfire-light-and-musical-speaker" },
             // { title: "Campfire Bluetooth Speakers", path: "/product/campfire-bluetooth-speakers" },
             // { title: "Technologically Advanced Bluetooth Speakers", path: "/product/technologically-advanced-bluetooth-speakers" },
           ],
@@ -91,7 +91,7 @@ const Navbar = () => {
           ],
         },
         {
-          heading: "Digital Photo Frames >",
+          heading: "Digital Photo Frame >",
           links: [
             { title: "Digital Photo Frames", path: "/product/digital-photo-frame" },
           ],
@@ -100,7 +100,11 @@ const Navbar = () => {
           heading: "Kids Tech and Electronics >",
           links: [
             // { title: "Kids Robot", path: "/product/kids-robot" },
+<<<<<<< HEAD
             { title: "NOVA T2 Robot", path: "/product/nova-t2-robot" },
+=======
+            { title: "Nova T2 Robot", path: "/product/nova-t2-robot" },
+>>>>>>> 8420b5b ( updated about and products and checkout page)
           ],
         },
         {
@@ -165,14 +169,14 @@ const Navbar = () => {
         {
           heading: "Nova Chocolates >",
           links: [
-            { title: "Chocolate Box", path: "/category/nova-chocolates/chocolate-box" },
-            { title: "Milk Bars", path: "/category/nova-chocolates/chocolate-bar" },
+            { title: "Nova Chocolate Box", path: "/category/nova-chocolates/nova-chocolate-box" },
+            { title: "Nova Chocolate Bar", path: "/category/nova-chocolates/nova-chocolate-bar" },
           ],
         },
         {
           heading: "New & Trending >",
           links: [
-            { title: "New Arrivals In Milk Bars", path: "/products" },
+            { title: "New Arrivals In Nova Chocolates", path: "/products" },
           ],
         },
       ],
@@ -186,7 +190,7 @@ const Navbar = () => {
           links: [
             { title: "Investor Relations", path: "/investor-relations" },
             { title: "Inventory Details", path: "#" },
-            { title: "Digital Purchase Order", path: "#" },
+            { title: "Digital Purchase Order", path: "/purchase-order/form" },
             { title: "Latest Updates", path: "#" },
           ],
         },
