@@ -29,7 +29,6 @@ function ProductPage() {
 
   return (
     <div className="product-page">
-      <h1>Our Products</h1>
       <div className="product-grid">
         {products.map((product) => (
           <div className="product-card" key={product._id}>

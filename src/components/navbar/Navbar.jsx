@@ -70,24 +70,24 @@ const Navbar = () => {
           heading: "Vacuum Sealers >",
           links: [
             { title: "Zip Lock Vacuum Sealers", path: "/product/zip-lock-vacuum-sealers" },
-            { title: "Kitchenware Vacuum Sealers", path: "/product/kitchenware-vacuum-sealers" },
-            { title: "Technologically Advance Vacuum Sealers", path: "/product/technologically-advance-vacuum-sealers" },
+            // { title: "Kitchenware Vacuum Sealers", path: "/product/kitchenware-vacuum-sealers" },
+            // { title: "Technologically Advance Vacuum Sealers", path: "/product/technologically-advance-vacuum-sealers" },
           ],
         },
         {
           heading: "Speakers & Audio >",
           links: [
             { title: "Bluetooth & Wireless Speakers", path: "/product/bluetooth-wireless-speakers" },
-            { title: "Campfire Bluetooth Speakers", path: "/product/campfire-bluetooth-speakers" },
-            { title: "Technologically Advanced Bluetooth Speakers", path: "/product/technologically-advanced-bluetooth-speakers" },
+            // { title: "Campfire Bluetooth Speakers", path: "/product/campfire-bluetooth-speakers" },
+            // { title: "Technologically Advanced Bluetooth Speakers", path: "/product/technologically-advanced-bluetooth-speakers" },
           ],
         },
         {
           heading: "Fans >",
           links: [
-            { title: "Technologically Advanced Fans", path: "/product/technologically-advanced-fans" },
+            // { title: "Technologically Advanced Fans", path: "/product/technologically-advanced-fans" },
             { title: "Bladeless Fans", path: "/product/bladeless-fan" },
-            { title: "Musical Fans", path: "/product/musical-fans" },
+            // { title: "Musical Fans", path: "/product/musical-fans" },
           ],
         },
         {
@@ -100,7 +100,7 @@ const Navbar = () => {
           heading: "Kids Tech and Electronics >",
           links: [
             // { title: "Kids Robot", path: "/product/kids-robot" },
-            { title: "Technologically Advanced Robots", path: "/product/technologically-advanced-robots" },
+            { title: "NOVA T2 Robot", path: "/product/nova-t2-robot" },
           ],
         },
         {

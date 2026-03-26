@@ -54,9 +54,9 @@ const About = () => {
         <tbody>
           <tr>
             <td>
-              <img src="images/Ritika-photo.JPG" alt="Ritika Aurora" className="team-photo" />
+              <img src="images/Ritika-photo.JPG" alt="Ritika" className="team-photo" />
             </td>
-            <td>Ritika Aurora</td>
+            <td>Ritika</td>
             <td>Business Owner</td>
             <td>
               <a href="mailto:info@novainternationaldesigns.com">
