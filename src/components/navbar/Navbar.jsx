@@ -100,11 +100,7 @@ const Navbar = () => {
           heading: "Kids Tech and Electronics >",
           links: [
             // { title: "Kids Robot", path: "/product/kids-robot" },
-<<<<<<< HEAD
-            { title: "NOVA T2 Robot", path: "/product/nova-t2-robot" },
-=======
             { title: "Nova T2 Robot", path: "/product/nova-t2-robot" },
->>>>>>> 8420b5b ( updated about and products and checkout page)
           ],
         },
         {
