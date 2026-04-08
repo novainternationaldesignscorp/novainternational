@@ -33,6 +33,8 @@ import CheckoutGuest from './pages/CheckoutGuest.jsx';
 import PurchaseOrderSummary from './pages/PurchaseOrderSummary.jsx';
 import OrderConfirmation from "./pages/OrderConfirmation";
 import AdminOrders from "./pages/AdminOrders.jsx";
+import AdminProducts from "./pages/AdminProducts.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
 import PurchaseHistory from "./pages/PurchaseHistory.jsx";
 
 
@@ -73,7 +75,8 @@ function App() {
         <Route path="/purchase-order" element={<ProtectedRoute><PurchaseOrder /></ProtectedRoute>} />
         <Route path="/purchase-order/form" element={<ProtectedRoute><PurchaseOrderForm /></ProtectedRoute>} />
         <Route path="/purchaseordersummary" element={<ProtectedRoute><PurchaseOrderSummary /></ProtectedRoute>} />       
-        <Route path="/admin/orders" element={<ProtectedRoute><AdminOrders /></ProtectedRoute>} />
+        <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />
+        <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />
         <Route path="/purchase-history" element={<ProtectedRoute><PurchaseHistory /></ProtectedRoute>} />
       </Routes>
 

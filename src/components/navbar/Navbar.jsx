@@ -211,6 +211,12 @@ const Navbar = () => {
               );
             })}
 
+            {user?.role === "admin" && (
+              <li>
+                <Link to="/admin/products">Admin</Link>
+              </li>
+            )}
+
             {/* If user is logged in, show their name and Sign Out button */}
             {user && (
               <>

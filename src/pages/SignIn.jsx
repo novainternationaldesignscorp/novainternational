@@ -33,7 +33,7 @@ const SignIn = () => {
         return;
       }
 
-      signIn(data.user);
+      signIn(data.user, data.token);
       navigate("/");
     } catch (err) {
       setError("Network error. Please try again.");

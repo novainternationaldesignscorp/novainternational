@@ -3,6 +3,10 @@ const DEFAULT_CLOUDINARY_CLOUD_NAME = "djgz1kays";
 export const getImageUrl = (imageValue, options = "") => {
   if (!imageValue) return "/images/no-image.png";
 
+  if (Array.isArray(imageValue)) {
+    return getImageUrl(imageValue[0], options);
+  }
+
   const normalizedValue =
     typeof imageValue === "string"
       ? imageValue

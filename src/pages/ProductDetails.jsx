@@ -58,11 +58,17 @@ function ProductDetails() {
   };
 
   const getProductImages = (item) => {
-    const productImages = (item?.images_public_id?.length
+    const rawImages = item?.images_public_id?.length
       ? item.images_public_id
       : item?.images?.length
         ? item.images
-        : [])
+        : item?.images_public_id || item?.images || [];
+
+    const normalizedImages = Array.isArray(rawImages)
+      ? rawImages
+      : [rawImages];
+
+    const productImages = normalizedImages
       .map((image) => getSafeImage(image))
       .filter(Boolean);
 
@@ -397,7 +403,7 @@ function ProductDetails() {
         <p className="category">{product.category}</p>
         <p className="description">{product.description || "N/A"}</p>
 
-        {hasColorVariants && (
+        {getVariantColors().length > 0 && (
           <div className="color-selector">
             <h4>Available Colors</h4>
             <div className="color-options">
