@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { getImageUrl } from "../utils/getImageUrl";
+import "./CSS/adminproducts.css";
 
 const CATEGORY_SUBCATEGORY_MAP = {
   Fashion: ["women"],
@@ -232,7 +233,7 @@ function AdminProducts() {
       <h2>Admin Product Dashboard</h2>
       <p>Use this page to create, update, delete, and upload images for products.</p>
 
-      <div style={{ marginBottom: "24px", maxWidth: "760px" }}>
+      <div>
         <h3>{formState._id ? "Edit Product" : "Create Product"}</h3>
         <form onSubmit={handleSubmit} style={{ display: "grid", gap: "12px" }}>
           <input
@@ -303,35 +304,35 @@ function AdminProducts() {
             <label style={{ display: "block", marginBottom: "8px", fontWeight: "bold" }}>
               Sizes (select one or more):
             </label>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
-              {AVAILABLE_SIZES.map((size) => (
-                <label key={size} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <input
-                    type="checkbox"
-                    checked={
-                      Array.isArray(formState.sizes)
-                        ? formState.sizes.includes(size)
-                        : formState.sizes.split(",").map(s => s.trim()).includes(size)
-                    }
-                    onChange={(e) => {
-                      const currentSizes = Array.isArray(formState.sizes)
-                        ? formState.sizes
-                        : formState.sizes.split(",").map(s => s.trim()).filter(Boolean);
-                      
-                      const newSizes = e.target.checked
-                        ? [...currentSizes, size]
-                        : currentSizes.filter(s => s !== size);
-                      
-                      setFormState((prev) => ({
-                        ...prev,
-                        sizes: newSizes,
-                      }));
-                    }}
-                  />
-                  {size}
-                </label>
-              ))}
-            </div>
+           <div className="size-checkbox-group">
+            {AVAILABLE_SIZES.map((size) => (
+              <label key={size}>
+                <input
+                  type="checkbox"
+                  checked={
+                    Array.isArray(formState.sizes)
+                      ? formState.sizes.includes(size)
+                      : formState.sizes.split(",").map(s => s.trim()).includes(size)
+                  }
+                  onChange={(e) => {
+                    const currentSizes = Array.isArray(formState.sizes)
+                      ? formState.sizes
+                      : formState.sizes.split(",").map(s => s.trim()).filter(Boolean);
+
+                    const newSizes = e.target.checked
+                      ? [...currentSizes, size]
+                      : currentSizes.filter(s => s !== size);
+
+                    setFormState((prev) => ({
+                      ...prev,
+                      sizes: newSizes,
+                    }));
+                  }}
+                />
+                <span>{size}</span>
+              </label>
+            ))}
+          </div>
           </div>
           
           <input
@@ -365,39 +366,24 @@ function AdminProducts() {
           </div>
 
           {formState.images_public_id.length > 0 && (
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                {formState.images_public_id.map((images_public_id, idx) => (
-                <div key={idx} style={{ position: "relative" }}>
-                    <img
-                    src={getImageUrl(images_public_id)}
-                    alt={`upload-${idx}`}
-                    style={{ width: "90px", height: "90px", objectFit: "cover", borderRadius: "6px" }}
-                    />
-                    {/* Remove Button */}
-                    <button
-                    type="button"
-                    onClick={() => handleRemoveImage(idx)}
-                    style={{
-                        position: "absolute",
-                        top: "-6px",
-                        right: "-6px",
-                        background: "#c00",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "50%",
-                        width: "20px",
-                        height: "20px",
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                        lineHeight: "18px",
-                        padding: 0,
-                    }}
-                    >
-                    ×
-                    </button>
-                </div>
-                ))}
-            </div>
+           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+            {formState.images_public_id.map((img, idx) => (
+              <div key={idx} className="image-wrapper">
+                <img
+                  src={getImageUrl(img)}
+                  alt={`upload-${idx}`}
+                  style={{ width: "90px", height: "90px", objectFit: "cover", borderRadius: "6px" }}
+                />
+                <button
+                  type="button"
+                  className="image-remove"
+                  onClick={() => handleRemoveImage(idx)}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
           )}
 
           <button type="submit">{formState._id ? "Save Changes" : "Create Product"}</button>

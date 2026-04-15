@@ -42,13 +42,9 @@ function ProductPage() {
             </Link>
 
             {/* Product name can also be clickable */}
-            <Link to={`/product/${product.slug || product._id}`} className="product-name">
-              <h3>{product.name}</h3>
-            </Link>
-
+            <Link to={`/product/${product.slug || product._id}`} className="product-name"><h3>{product.name}</h3></Link>
+            <h4>Style No: {product.styleNo}</h4>
             <p className="price">USD {product.price}</p>
-            <p className="category">{product.category}</p>
-            {product.subcategory && <p className="category">{product.subcategory}</p>}
           </div>
         ))}
       </div>

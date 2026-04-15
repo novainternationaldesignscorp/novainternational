@@ -33,9 +33,8 @@ const About = () => {
           <p><strong>Designation:</strong> Founder and Owner</p>
           <p><strong>Experience:</strong> Over 15 years in various business lines, Master's in International Business Management</p>
           <p>
-            <strong>LinkedIn:</strong>{" "}
             <a href="https://www.linkedin.com/in/ritika-aurora-81797b35" target="_blank" >
-              Visit Profile
+              LinkedIn Account
             </a>
           </p>
         </div>
@@ -48,9 +47,8 @@ const About = () => {
           <p><strong>Designation:</strong> Software Developer</p>
           <p><strong>Experience:</strong> Extensive experience in software development and contributed to various projects at Nova International Designs Corporation</p>
           <p>
-            <strong>LinkedIn:</strong>{" "}
             <a href="https://www.linkedin.com/in/shila-front-end-developer/" target="_blank" >
-              Visit Profile
+              LinkedIn Account
             </a>
           </p>
         </div>
@@ -63,9 +61,8 @@ const About = () => {
           <p><strong>Designation:</strong> Cyber Security Engineer</p>
           <p><strong>Experience:</strong> Experience in cyber security ensuring safety and security at Nova International Designs Corporation</p>
           <p>
-            <strong>LinkedIn:</strong>{" "}
             <a href="https://www.linkedin.com/in/mohana-krishna-chaganti-914823249" target="_blank" >
-              Visit Profile
+              LinkedIn Account
             </a>
           </p>
         </div>

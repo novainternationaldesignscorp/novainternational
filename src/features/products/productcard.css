@@ -40,6 +40,11 @@
 .product-image,
 .product-name {
   cursor: pointer;
+  text-decoration: none;
+}
+
+.product-name:hover {
+  text-decoration: none;
 }
 
 /* ---- PRODUCT IMAGE ---- */
