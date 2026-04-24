@@ -373,7 +373,7 @@ function ProductDetails() {
         </h1>
         <p className="style-no">Style No: {selectedVariant?.styleNo || product.styleNo}</p>
         <h2 className="price">USD {selectedVariant?.price ?? product.price}</h2>
-        <p className="category">{product.category}</p>
+        {/* <p className="category">{product.category}</p> */}
         <p className="description">{product.description || "N/A"}</p>
 
         {getVariantColors().length > 0 && (

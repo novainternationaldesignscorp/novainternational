@@ -140,12 +140,14 @@
 
 /* ---------------- Cart + Buttons ---------------- */
 .cart-count {
-  color: black;
-  padding: 8px;
-  background-image: url(./../images/purchase-order-icon.jpg);
+  color: rgb(255, 254, 254);
+  padding: 10px;
+  /* background-image: url(../../images/purchase-order-icon.jpg); */
+  background-image: url(./../images/purchase-order-icon.png);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  font-size: 15px;
 }
 
 .signout-btn {
