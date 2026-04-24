@@ -358,58 +358,47 @@ export default function PurchaseOrderForm({ items }) {
           </table>
         </div>
 
-        {/* <div className="po-left">
-          <div style={{ marginTop: "10px", fontSize: "14px", color: "#666" }}>
-            <strong>Minimum Quantity Requirements:</strong>
-            <ul style={{ marginTop: "5px", marginLeft: "20px" }}>
-              {orderItems.map((item, index) => {
-                const minQty = minQtyByProduct[item.productId] || 1;
-                return (
-                  <li key={index}>
-                    {item.styleNo?.toString().trim() ? item.styleNo : "Item"} - Minimum: {minQty} {minQty === 1 ? "unit" : "units"}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div> */}
-
+       
         <div className="po-container">
-          
           <form onSubmit={handleSubmit}>
+            {/* LEFT → BANK DETAILS */}
+            <div className="po-left po-form-section">      
+              <h3>BANK DETAILS</h3>
+              <div className="input-row">
+                <input name="bankName" placeholder="Bank Name" value={formData.bankName} onChange={handleChange} required />
+                <input name="accountNo" placeholder="A/C Number" value={formData.accountNo} onChange={handleChange} required />
+                <input name="routingNo" placeholder="Routing Number" value={formData.routingNo} onChange={handleChange} required />
+              </div>
+            </div>  
+
+            {/* RIGHT → BUSINESS DETAILS */}
             <div className="po-right po-form-section">  
+              <h3>BUSINESS DETAILS</h3>
+              <div className="input-row">
+                <input name="customerName" placeholder="Customer Name" value={formData.customerName} onChange={handleChange} required />
+                <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
+                <input name="attn" placeholder="ATTN" value={formData.attn} onChange={handleChange} required />
+                <input name="tel" placeholder="Telephone" value={formData.tel} onChange={handleChange} required />
+                <input name="fax" placeholder="Fax" value={formData.fax} onChange={handleChange} />
+                <textarea name="address" placeholder="Address" value={formData.address} onChange={handleChange} required />
+              </div>
 
-              {/* LEFT: Business Details */}         
-                {/* <h3>BUSINESS DETAILS</h3>
-                <div className="input-row">
-                  <input name="customerName" placeholder="Customer Name" value={formData.customerName} onChange={handleChange} required />
-                  <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
-                  <input name="attn" placeholder="ATTN" value={formData.attn} onChange={handleChange} required />
-                  <input name="tel" placeholder="Telephone" value={formData.tel} onChange={handleChange} required />
-                  <input name="fax" placeholder="Fax" value={formData.fax} onChange={handleChange} />
-                  <textarea name="address" placeholder="Address" value={formData.address} onChange={handleChange} required />
-                </div> */}
-                {/* RIGHT: Bank Details */}
-                {/* <div className="po-left po-form-section">      
-                    <h3>BANK DETAILS</h3>
-                    <div className="input-row">
-                      <input name="bankName" placeholder="Bank Name" value={formData.bankName} onChange={handleChange} required />
-                      <input name="accountNo" placeholder="A/C Number" value={formData.accountNo} onChange={handleChange} required />
-                      <input name="routingNo" placeholder="Routing Number" value={formData.routingNo} onChange={handleChange} required />
-                    </div>
-                </div>   */}
+              {formError && <p className="po-form-error">{formError}</p>}
 
-                {formError && <p className="po-form-error">{formError}</p>}
+              <div>
+                <strong>Grand Total: $</strong>
+                <strong>
+                  {orderItems
+                    .reduce((sum, it) => sum + (it.qty || 0) * (it.price || 0), 0)
+                    .toFixed(2)}
+                </strong>
+              </div>
 
-                <div>
-                  <strong>Grand Total: $</strong>
-                  <strong>{orderItems.reduce((sum, it) => sum + (it.qty || 0) * (it.price || 0), 0).toFixed(2)}</strong>
-                </div>
-
-                <button type="submit">Proceed to Checkout</button>   
-              </div>    
-            </form>
-          </div>
+              <button type="submit">Proceed to Checkout</button>   
+            </div>    
+          </form>
+         
+        </div>
       </div>
     
   );

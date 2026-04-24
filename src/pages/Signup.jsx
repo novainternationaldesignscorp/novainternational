@@ -39,13 +39,10 @@ const SignUp = () => {
     setLoading(true);
 
     try {
-      // 1️ Create user
-      const createdUser = await signUp(trimmedName, trimmedEmail, password);
+      // Create user (signUp now handles authentication)
+      await signUp(trimmedName, trimmedEmail, password);
 
-      // 2️ Authenticate immediately with created user and token
-      await signIn(createdUser.user, createdUser.token);
-
-      // 3️ Show success popup (server already sends welcome email)
+      // Show success popup (server already sends welcome email)
       setShowPopup(true);
     } catch (err) {
       setError(err.message || "Signup failed");

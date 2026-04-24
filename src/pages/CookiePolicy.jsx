@@ -59,7 +59,7 @@ const CookiePolicy = () => {
 
           <li>
             <strong>Third-party cookies</strong> — set by external services we
-            use (such as Stripe for payments)
+            use (such as Square for payments)
           </li>
         </ul>
       </section>
@@ -89,7 +89,7 @@ const CookiePolicy = () => {
           <li>Session authentication cookies</li>
           <li>Security cookies (CSRF tokens)</li>
           <li>Load balancing cookies</li>
-          <li>Stripe payment cookies</li>
+          <li>Square payment cookies</li>
         </ul>
 
         <p className="legal-basis">
@@ -127,7 +127,7 @@ const CookiePolicy = () => {
         </p>
 
         <ul>
-          <li>Stripe — payment processing and fraud prevention</li>
+          <li>Square — payment processing and fraud prevention</li>
           <li>Cloudinary — secure media delivery and image optimization</li>
         </ul>
       </section>
@@ -168,7 +168,7 @@ const CookiePolicy = () => {
             </tr>
 
             <tr>
-              <td>stripe.sid</td>
+              <td>Square payment cookies</td>
               <td>Third-party</td>
               <td>Secure payment processing</td>
               <td>Session</td>

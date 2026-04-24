@@ -4,7 +4,7 @@ import { useGuest } from "../context/GuestContext";
 import "./CSS/orderConfirmation.css"; 
 
 export default function PurchaseHistory() {
-  const { user } = useContext(UserContext);
+  const { user, getToken } = useContext(UserContext);
   const { guest } = useGuest();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,15 +20,32 @@ export default function PurchaseHistory() {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        // Determine which endpoint to use
-        const endpoint = user
-          ? `${import.meta.env.VITE_API_URL}/api/orders/my-orders`
-          : `${import.meta.env.VITE_API_URL}/api/orders/guest/${guest._id}?sessionId=${encodeURIComponent(
-              guest.sessionId || ""
-            )}`;
+        let res;
 
-        const res = await fetch(endpoint, { credentials: "include" });
+        if (user) {
+          // Authenticated user - use Authorization header
+          const token = getToken();
+          if (!token) {
+            throw new Error("Authentication required. Please log in again.");
+          }
+
+          res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/my-orders`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+        } else {
+          // Guest user - use sessionId in query params
+          res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/guest/${guest._id}?sessionId=${encodeURIComponent(
+            guest.sessionId || ""
+          )}`, { credentials: "include" });
+        }
+
         if (!res.ok) {
+          if (res.status === 401) {
+            throw new Error("Authentication required. Please log in again.");
+          }
           throw new Error("Failed to fetch orders");
         }
 
@@ -43,7 +60,7 @@ export default function PurchaseHistory() {
     };
 
     fetchOrders();
-  }, [user, guest]);
+  }, [user, guest, getToken]);
 
   if (loading) return <div style={{ padding: "2rem" }}>Loading your orders...</div>;
   if (error) return <div style={{ padding: "2rem", color: "red" }}>{error}</div>;
@@ -126,24 +143,36 @@ export default function PurchaseHistory() {
               <div style={{ marginBottom: "1rem" }}>
                 <h4 style={{ marginBottom: "0.5rem" }}>Shipping Address</h4>
                 <p style={{ margin: "0", fontSize: "0.95rem" }}>
-                  {order.shippingInfo.name}
+                  {order.shippingInfo.firstName} {order.shippingInfo.lastName}
                   <br />
                   {order.shippingInfo.address}
                   <br />
-                  {order.shippingInfo.city}, {order.shippingInfo.postalCode}
+                  {order.shippingInfo.city}, {order.shippingInfo.zip || order.shippingInfo.postalCode}
                   <br />
                   {order.shippingInfo.country}
                 </p>
               </div>
             )}
 
-            <div style={{ textAlign: "right", paddingTop: "1rem", borderTop: "1px solid #ddd" }}>
-              <p style={{ margin: "0.5rem 0", fontSize: "0.9rem", color: "#666" }}>
-                Order ID: <code>{order._id?.toString().slice(0, 12)}...</code>
-              </p>
-              <p style={{ margin: "0.5rem 0", fontSize: "0.9rem", color: "#666" }}>
-                Purchase Order ID: <code>{order.purchaseOrderId}</code>
-              </p>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem", paddingTop: "1rem", borderTop: "1px solid #ddd" }}>
+              <div>
+                <p style={{ margin: "0.5rem 0", fontSize: "0.9rem", color: "#666" }}>
+                  <strong>Status:</strong> <span style={{ textTransform: "capitalize", color: order.paymentStatus === "paid" ? "#4caf50" : "#ff9800" }}>{order.paymentStatus}</span>
+                </p>
+                {order.paymentMethod && (
+                  <p style={{ margin: "0.5rem 0", fontSize: "0.9rem", color: "#666" }}>
+                    <strong>Payment Method:</strong> {order.paymentMethod}
+                  </p>
+                )}
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <p style={{ margin: "0.5rem 0", fontSize: "0.9rem", color: "#666" }}>
+                  Order ID: <code>{order._id?.toString().slice(0, 12)}...</code>
+                </p>
+                <p style={{ margin: "0.5rem 0", fontSize: "0.9rem", color: "#666" }}>
+                  Purchase Order ID: <code>{order.purchaseOrderId}</code>
+                </p>
+              </div>
             </div>
           </div>
         ))}

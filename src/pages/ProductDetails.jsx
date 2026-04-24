@@ -24,7 +24,7 @@ function ProductDetails() {
   const [validationError, setValidationError] = useState("");
   const [showPopup, setShowPopup] = useState(false);
 
-  // ✅ SAFE IMAGE HELPER
+  //  SAFE IMAGE HELPER
   const getSafeImage = (image_public_id) => {
     if (!image_public_id) return null;
     if (Array.isArray(image_public_id)) {
@@ -60,12 +60,12 @@ function ProductDetails() {
         if (!res.ok) throw new Error("Product not found");
 
         const data = await res.json();
-
-        console.log("✅ Product Fetched:", {
-          name: data.name,
-          images_public_id: data.images_public_id,
-          images_count: data.images_public_id?.length || 0
-        });
+        
+        // console.log(" Product Fetched:", {
+        //   name: data.name,
+        //   images_public_id: data.images_public_id,
+        //   images_count: data.images_public_id?.length || 0
+        // });
 
         const variants = data.variants || [];
         const colors =
@@ -302,10 +302,13 @@ function ProductDetails() {
       const ownerId = user?._id || guest?._id;
       const endpoint = `${import.meta.env.VITE_API_URL}/api/purchaseOrderDraft/${ownerType}/${ownerId}/items`;
 
+      const isProd = !window.location.hostname.includes('localhost') &&
+                    !window.location.hostname.includes('127.0.0.1');
+
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        credentials: isProd ? 'include' : 'omit',
         body: JSON.stringify({ items: poData }),
       });
 
@@ -458,21 +461,21 @@ function ProductDetails() {
         )}
 
         {/* temporary disable Add to PO button until we finalize the order item structure and flow */}
-        {/* <div className="action-buttons">
+        <div className="action-buttons">
           {!showAddedBar && (
             <button className="add-po-btn" onClick={handleAddToPO}>
               Add to Purchase Order
             </button>
           )}
-        </div> */}
+        </div>
 
-         <div className="action-buttons">
+         {/* <div className="action-buttons">
           {!showAddedBar && (
             <button className="add-po-btn">
               Add to Purchase Order
             </button>
           )}
-        </div>
+        </div> */}
 
         {showAddedBar && (
           <div className="action-buttons">

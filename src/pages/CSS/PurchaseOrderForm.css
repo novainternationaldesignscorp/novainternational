@@ -12,61 +12,30 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* ---------- Logo ---------- */
 .business-log-purchase {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  /* Full width so centering works properly */
   margin-bottom: 20px;
 }
 
 .business-log-purchase img {
   max-width: 180px;
-  /* Control logo size */
   width: 100%;
   height: auto;
   object-fit: contain;
 }
-
 
 .purchase-order-form h2 {
   text-align: center;
   margin-bottom: 30px;
 }
 
-/* ---------- Flex container for left and right form sections ---------- */
-.po-container {
-  display: flex;
-  gap: 30px;
-  margin-top: 30px;
-}
-
-/* LEFT AND RIGHT SECTIONS */
-.po-left,
-.po-right {
-  flex: 1;
-}
-
-.po-form-section h3 {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-/* ---------- Form Inputs ---------- */
-.purchase-order-form textarea {
+/* ---------- Table Section ---------- */
+.po-left {
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  font-size: 16px;
-}
-
-.purchase-order-form input:focus,
-.purchase-order-form textarea:focus {
-  border-color: #000000;
-  outline: none;
 }
 
 /* ---------- Item Table ---------- */
@@ -87,14 +56,15 @@
   padding: 8px;
 }
 
-.po-table input {
+.po-table input,
+.po-table select {
   width: 100%;
   padding: 6px;
   border: 1px solid #aaa;
   border-radius: 4px;
 }
 
-/* Buttons */
+/* Remove button */
 .po-table button {
   background: #ff4040;
   color: white;
@@ -108,6 +78,72 @@
   background: #d60000;
 }
 
+/* ---------- FORM LAYOUT FIX ---------- */
+.po-container form {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+  align-items: flex-start;
+}
+.po-form-section {
+  flex: 1;
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Business Details (LEFT) */
+.po-right.po-form-section {
+  flex: 1;
+  background: #fafafa;
+  padding: 15px;
+  border-radius: 10px;
+  order: 2;
+  border: solid 1px #ddd;
+}
+
+/* Bank Details (RIGHT) */
+.po-left.po-form-section {
+  flex: 1;
+  padding: 15px;
+  border-radius: 10px;
+  order: 1;
+  border: solid 1px #ddd;
+}
+
+/* Section headings */
+.po-form-section h3 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* ---------- Inputs ---------- */
+.input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.purchase-order-form input,
+.purchase-order-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.purchase-order-form textarea {
+  resize: vertical;
+}
+
+.purchase-order-form input:focus,
+.purchase-order-form textarea:focus {
+  border-color: #000000;
+  outline: none;
+}
+
+/* ---------- Submit Button ---------- */
 button[type="submit"] {
   width: 100%;
   padding: 14px;
@@ -124,16 +160,16 @@ button[type="submit"]:hover {
   background: #000000;
 }
 
-/* Error message */
+/* ---------- Error ---------- */
 .po-form-error {
   color: red;
   margin-top: 10px;
 }
 
+/* ---------- Total Section ---------- */
 .checkout-section {
   margin-top: 20px;
   text-align: right;
-  /* align total and button to right */
 }
 
 .checkout-section .grand-total {
@@ -144,12 +180,54 @@ button[type="submit"]:hover {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
-  .po-container {
+  .po-container form {
     flex-direction: column;
   }
 
-  .po-left,
-  .po-right {
+  .po-right.po-form-section,
+  .po-left.po-form-section {
     width: 100%;
   }
+}
+
+@media (max-width: 768px) {
+
+  .purchase-order-form {
+    padding: 15px;
+  }
+
+  /* Table scroll */
+  .po-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .po-table th,
+  .po-table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .po-table input,
+  .po-table select {
+    font-size: 12px;
+    padding: 5px;
+  }
+
+  /* Form stacked */
+  .po-container form {
+    flex-direction: column;
+  }
+
+  .input-row {
+    gap: 8px;
+  }
+
+  button[type="submit"] {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  
 }

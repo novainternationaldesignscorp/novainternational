@@ -5,7 +5,7 @@ const About = () => {
   return (
     <div className="about-page">
       <p>
-        <img src="images/logo2.png" alt="Nova International Designs Logo" />
+        <img className="logo2" src="images/logo2.png" alt="Nova International Designs Logo" />
       </p>
 
       <p className="red-text">

@@ -69,7 +69,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/checkout-guest" element={<CheckoutGuest />} />  
-        <Route path="/order-confirmation" element={<OrderConfirmation />} />
+        <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
         <Route path="/checkout" element={<Checkout />} />
 
         {/* Protected Routes */}

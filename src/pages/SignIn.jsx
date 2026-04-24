@@ -16,27 +16,10 @@ const SignIn = () => {
     setError("");
 
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ email, password }),
-        }
-      );
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "Login failed");
-        return;
-      }
-
-      signIn(data.user);
+      await signIn(email, password);
       navigate("/");
     } catch (err) {
-      setError("Network error. Please try again.");
+      setError(err.message);
     }
   };
 

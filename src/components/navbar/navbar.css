@@ -5,15 +5,13 @@
 }
 
 .top-nav .container {
-  /* max-width: 1200px; */
   margin: 0 auto;
   padding: 0 32px;
   display: flex;
-  color: red;
   font-weight: bold;
+  color:red;
 }
 
-/* Keep links on right */
 .top-nav ul {
   list-style: none;
   margin-left: auto;
@@ -26,20 +24,17 @@
   text-decoration: none;
   color: white;
   font-weight: bold;
-  /* padding-right: 20px; */
 }
 
 .top-nav li a:hover {
-  color: white;
   text-decoration: underline;
-  font-weight: bold;
 }
 
-/* ---------------- Main Navigation ---------------- */
+/* ---------------- Main Navbar ---------------- */
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: flex-start;
   background: #1a4f35;
   font-family: Arial, sans-serif;
   position: relative;
@@ -47,38 +42,7 @@
   height: 117px;
 }
 
-/* .cart-icon{
-  color:goldenrod;
-} */
-.cart-count {
-  color: rgb(0, 0, 0);
-  padding: 8px;
-  /* background-color: goldenrod; */
-  background-image: url(./../images/purchase-order-icon.jpg);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-/* Guest signout button styling */
-.signout-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: inherit;
-  padding: 0;
-  transition: color 0.2s;
-}
-
-.signout-btn:hover {
-  color: #ff6b6b;
-  text-decoration: underline;
-}
-
-/* Main menu */
+/* ---------------- Menu ---------------- */
 .menu {
   display: flex;
   list-style: none;
@@ -92,26 +56,28 @@
 }
 
 .menu-title {
-  text-decoration: none;
   color: #ffffff;
   font-size: 16px;
-}
-
-.menu-title:hover {
+  cursor: pointer;
   text-decoration: none;
 }
 
-.menu-title:hover {
-  border-bottom: 2px solid #ffffff;
+/* remove underline by default for Link inside */
+.menu-title a {
+  color: #ffffff;
+  text-decoration: none;
 }
 
+/* hover effect ONLY */
+.menu-title:hover,
+.menu-title a:hover {
+  text-decoration: underline;
+}
 
-
-/* ---------------- Mega Menu ---------------- */
+/* ---------------- Mega Menu (Desktop) ---------------- */
 .mega-menu {
   position: fixed;
   top: 160px;
-  /* Adjusted for top nav + main nav */
   left: 0;
   width: 100vw;
   background: #f8f8f8;
@@ -119,8 +85,9 @@
   display: flex;
   gap: 32px;
   border-top: 1px solid #ddd;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
   z-index: 50;
+
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
@@ -133,15 +100,13 @@
   transform: translateY(0);
 }
 
-/* When JS forces hide (e.g., submenu clicked), ensure mega menu stays hidden */
 .mega-menu.force-hidden {
   opacity: 0 !important;
   visibility: hidden !important;
-  transform: translateY(10px) !important;
   pointer-events: none !important;
-  transition: all 0.3s ease !important;
 }
 
+/* Sections */
 .mega-section {
   min-width: 180px;
 }
@@ -156,7 +121,6 @@
 .mega-section ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .mega-section li {
@@ -167,58 +131,87 @@
   text-decoration: none;
   color: #555;
   font-size: 14px;
-  transition: color 0.2s;
 }
 
 .mega-section li a:hover {
   color: #000;
   text-decoration: underline;
 }
-/* ---------------- Mobile Styles ---------------- */
+
+/* ---------------- Cart + Buttons ---------------- */
+.cart-count {
+  color: black;
+  padding: 8px;
+  background-image: url(./../images/purchase-order-icon.jpg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.signout-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.signout-btn:hover {
+  color: #ff6b6b;
+}
+
+/* ---------------- Hamburger ---------------- */
+.menu-toggle {
+  display: none;
+  font-size: 26px;
+  color: white;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
 
-  /* Top nav adjustments */
+  /* Top nav */
   .top-nav .container {
     flex-direction: column;
-    align-items: flex-start;
     padding: 10px 16px;
   }
 
   .top-nav ul {
-    margin-left: 0;
     flex-direction: column;
     align-items: flex-start;
+    margin-left: 0;
     gap: 10px;
-    width: 100%;
   }
 
-  /* Main navbar */
+  /* Navbar */
   .navbar {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap;
     height: auto;
     padding: 10px 16px;
   }
 
-  /* Hamburger button (you’ll need to add this in HTML) */
+  .logo{
+    width: 200px;
+  }
+  /* Show hamburger */
   .menu-toggle {
     display: block;
-    cursor: pointer;
-    font-size: 22px;
-    color: white;
-    margin-left: auto;
   }
 
   /* Hide menu by default */
   .menu {
+    display: none;
     flex-direction: column;
     width: 100%;
     margin-left: 0;
     gap: 20px;
-    display: none;
+    padding-top: 10px;
   }
 
-  /* Show when active (toggle with JS) */
+ 
+  /* Show menu when active */
   .menu.active {
     display: flex;
   }
@@ -228,47 +221,48 @@
   }
 
   .menu-title {
-    display: block;
+    display: flex;
+    justify-content: space-between;
     padding: 10px 0;
     width: 100%;
   }
 
-  /* Mega menu becomes stacked */
+  /* ---------------- Mega Menu Mobile ---------------- */
   .mega-menu {
     position: static;
     width: 100%;
-    padding: 10px 0;
+    padding: 10px 20px;
     flex-direction: column;
     gap: 16px;
-    box-shadow: none;
-    border-top: none;
 
     opacity: 1;
     visibility: visible;
     transform: none;
     display: none;
+    box-shadow: none;
+    border: none;
   }
 
-  /* Show submenu when parent active */
+  /* Show when parent active */
   .menu-item.active .mega-menu {
     display: flex;
   }
 
+  /* Sections */
   .mega-section {
     min-width: 100%;
   }
 
   .mega-section h4 {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .mega-section li a {
-    font-size: 13px;
+    font-size: 16px;
   }
 
-  /* Cart icon scaling */
+  /* Cart */
   .cart-count {
-    padding: 15px;
-    background-size: contain;
+    padding: 14px;
   }
 }

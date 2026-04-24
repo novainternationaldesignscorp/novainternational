@@ -1,33 +1,22 @@
-// src/components/navbar/Navbar.jsx
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { useGuest } from "../../context/GuestContext.jsx";
-import SignOutButton from "../SignOutButton";  
+import SignOutButton from "../SignOutButton";
 import { usePO } from "../../context/PurchaseOrderContext.jsx";
 import "./navbar.css";
 
-const Navbar = () => {
-  const { user, signOut, loading } = useContext(UserContext);  // Get user, signOut, and loading from context
-  const { guest, endGuestSession } = useGuest();  // Get guest context
-  const { poItems } = usePO();
-  const [activeMenu, setActiveMenu] = useState(null);  // Manage active menu item state
-  const [forceHide, setForceHide] = useState(false);
-
-  if (loading) return null;  // Return null while the loading state is true
-
-  // Top utility links
-  const topLinks = [
-    { title: "About Us", path: "/about" },
-    // { title: "Add to Purchase Order", path: "/purchase-order" },
-    { title: "Gift Cards", path: "#" },
-    { title: "Sign In", path: "/signin" },
-    { title: "Contact Us", path: "/contact" },
-    { title: "Careers", path: "/careers" },
-  ];
+/* ✅ MOVE STATIC DATA OUTSIDE */
+const TOP_LINKS = [
+  { title: "About Us", path: "/about" },
+  { title: "Gift Cards", path: "#" },
+  { title: "Sign In", path: "/signin" },
+  { title: "Contact Us", path: "/contact" },
+  { title: "Careers", path: "/careers" },
+];
 
   // Menu Data
-  const menuData = [
+  const MENU_DATA = [
     {
       title: "Women",
       path: "/category/fashion/women",
@@ -194,15 +183,38 @@ const Navbar = () => {
     },
   ];
 
+const Navbar = () => {
+  const { user, signOut, loading } = useContext(UserContext);
+  const { guest, endGuestSession } = useGuest();
+  const { poItems } = usePO();
+
+  const [activeMenu, setActiveMenu] = useState(null);
+  const [forceHide, setForceHide] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeMobileMenu, setActiveMobileMenu] = useState(null);
+
+  /* ✅ MEMO (prevents recreation every render) */
+  const topLinks = useMemo(() => TOP_LINKS, []);
+  const menuData = useMemo(() => MENU_DATA, []);
+
+  /* ✅ STABLE HANDLERS */
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen((prev) => !prev);
+  }, []);
+
+  const toggleMobileSubMenu = useCallback((i) => {
+    setActiveMobileMenu((prev) => (prev === i ? null : i));
+  }, []);
+
+  if (loading) return null;
 
   return (
     <header>
-      {/* Top Links (Sign In, Contact Us, etc.) */}
+      {/* TOP NAV */}
       <div className="top-nav">
         <div className="container">
           <ul>
             {topLinks.map((link, i) => {
-              // If the user is logged in or guest is active, hide the "Sign In" link
               if (link.title === "Sign In" && (user || guest)) return null;
               return (
                 <li key={i}>
@@ -217,24 +229,19 @@ const Navbar = () => {
               </li>
             )}
 
-            {/* If user is logged in, show their name and Sign Out button */}
             {user && (
               <>
                 <li>Welcome, {user.name || user.email}</li>
                 <li><SignOutButton onSignOut={signOut} /></li>
                 <li>
                   <Link to="/purchase-order/form">
-                    {/* <span className="cart-icon">Purchase Order</span> */}
                     <span className="cart-count">{poItems?.length || 0}</span>
                   </Link>
                 </li>
-                <li>
-                  <Link to="/purchase-history">Purchase History</Link>
-                </li>
+                <li><Link to="/purchase-history">Purchase History</Link></li>
               </>
             )}
 
-            {/* If guest is active, show welcome message and sign out button */}
             {!user && guest && (
               <>
                 <li>Welcome, {guest.name}</li>
@@ -245,38 +252,58 @@ const Navbar = () => {
                 </li>
                 <li>
                   <Link to="/purchase-order/form">
-                    {/* <span className="cart-icon">Purchase Order</span> */}
                     <span className="cart-count">{poItems?.length || 0}</span>
                   </Link>
                 </li>
-                <li>
-                  <Link to="/purchase-history">Purchase History</Link>
-                </li>
+                <li><Link to="/purchase-history">Purchase History</Link></li>
               </>
             )}
           </ul>
         </div>
       </div>
 
-      {/* Main Navbar with category menu items */}
+      {/* MAIN NAV */}
       <nav className="navbar">
         <div>
           <Link to="/">
             <img src="/images/logo.png" alt="logo" className="logo" />
           </Link>
         </div>
-        <ul className="menu">
+
+        {/* ✅ FIXED handler */}
+        <div className="menu-toggle" onClick={toggleMobileMenu}>
+          ☰
+        </div>
+
+        <ul className={`menu ${mobileMenuOpen ? "active" : ""}`}>
           {menuData.map((menu, i) => (
             <li
               key={i}
-              className="menu-item"
-              onMouseEnter={() => setActiveMenu(i)} // Show mega menu on hover
-              onMouseLeave={() => setActiveMenu(null)} // Hide mega menu on hover out
+              className={`menu-item ${activeMobileMenu === i ? "active" : ""}`}
+              onMouseEnter={() =>
+                window.innerWidth > 768 && setActiveMenu(i)
+              }
+              onMouseLeave={() =>
+                window.innerWidth > 768 && setActiveMenu(null)
+              }
             >
-              <Link to={menu.path} className="menu-title">{menu.title}</Link>
+              <div
+                className="menu-title"
+                onClick={() => {
+                  if (window.innerWidth <= 768) {
+                    toggleMobileSubMenu(i);
+                  }
+                }}
+              >
+                <Link to={menu.path}>{menu.title}</Link>
+              </div>
 
-              {/* Mega Menu (will show when hovering on the menu item) */}
-              <div className={`mega-menu ${activeMenu === i ? "show" : ""} ${forceHide ? "force-hidden" : ""}`}>
+              <div
+                className={`mega-menu 
+                  ${activeMenu === i ? "show" : ""} 
+                  ${activeMobileMenu === i ? "show-mobile" : ""} 
+                  ${forceHide ? "force-hidden" : ""}`}
+              >
                 {menu.megaMenu.map((section, idx) => (
                   <div key={idx} className="mega-section">
                     <h4>{section.heading}</h4>
@@ -286,8 +313,9 @@ const Navbar = () => {
                           <Link
                             to={link.path}
                             onClick={() => {
-                              // Immediately hide mega menu when a submenu is clicked
                               setActiveMenu(null);
+                              setActiveMobileMenu(null);
+                              setMobileMenuOpen(false);
                               setForceHide(true);
                               setTimeout(() => setForceHide(false), 300);
                             }}
@@ -308,4 +336,5 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+/* ✅ PREVENT RE-RENDER */
+export default React.memo(Navbar);

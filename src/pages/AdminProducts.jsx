@@ -14,7 +14,13 @@ const CATEGORY_SUBCATEGORY_MAP = {
 const AVAILABLE_SIZES = ["S", "M", "L"];
 
 function AdminProducts() {
-  const { user } = useContext(UserContext);
+  const { user, getToken } = useContext(UserContext);
+
+  // Determine if we're in production
+  const isProduction = () => {
+    return !window.location.hostname.includes('localhost') &&
+           !window.location.hostname.includes('127.0.0.1');
+  };
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -93,10 +99,14 @@ function AdminProducts() {
 
     setUploading(true);
     try {
+      const token = getToken();
       const res = await fetch(`${apiUrl}/api/upload`, {
         method: "POST",
-        credentials: "include",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
         body: formData,
+        credentials: isProduction() ? 'include' : 'omit',
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Image upload failed");
@@ -175,11 +185,15 @@ function AdminProducts() {
       : `${apiUrl}/api/products`;
 
     try {
+      const token = getToken();
       const res = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify(payload),
+        credentials: isProduction() ? 'include' : 'omit',
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Product save failed");
@@ -213,9 +227,13 @@ function AdminProducts() {
   const handleDelete = async (productId) => {
     if (!window.confirm("Delete this product?")) return;
     try {
+      const token = getToken();
       const res = await fetch(`${apiUrl}/api/products/${productId}`, {
         method: "DELETE",
-        credentials: "include",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        credentials: isProduction() ? 'include' : 'omit',
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Delete failed");

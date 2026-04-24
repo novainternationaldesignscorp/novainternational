@@ -10,8 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@stripe/react-stripe-js": "^5.6.0",
-    "@stripe/stripe-js": "^8.7.0",
+    "@square/web-sdk": "^2.1.0",
     "axios": "^1.13.2",
     "cloudinary": "^2.8.0",
     "connect-mongo": "^6.0.0",

@@ -1,5 +1,4 @@
-// src/pages/PurchaseOrder.jsx
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePO } from "../context/PurchaseOrderContext.jsx";
 import { useGuest } from "../context/GuestContext.jsx";
@@ -10,39 +9,51 @@ function PurchaseOrder() {
   const { user, loading } = useContext(UserContext);
   const { guest } = useGuest();
   const navigate = useNavigate();
-  const { poItems, removeFromPO, clearPO } = usePO();
+  const { poItems, removeFromPO } = usePO();
+
   const [error, setError] = useState("");
   const [removingKey, setRemovingKey] = useState("");
 
+  // ✅ Safe redirect (production correct)
+  useEffect(() => {
+    if (!loading && !user && !guest) {
+      navigate("/signin");
+    }
+  }, [user, guest, loading, navigate]);
+
+  // ✅ Block render until auth resolved (prevents flicker)
   if (loading) return <p className="po-loading">Checking login status...</p>;
-  
-  // Allow access if user OR guest is logged in
-  if (!user && !guest) {
-    alert("Please log in or proceed as guest");
-    navigate("/signin");
-    return null;
+
+  if (!user && !guest) return null;
+
+  if (!poItems || poItems.length === 0) {
+    return <p className="po-empty">No items added in Purchase Order.</p>;
   }
 
-  if (!poItems || poItems.length === 0)
-    return <p className="po-empty">No items added in Purchase Order.</p>;
-
-  const totalAmount = poItems.reduce(
-    (acc, item) => acc + (item.price || 0) * (item.quantity || item.qty || 0),
-    0
-  );
+  const totalAmount = poItems.reduce((acc, item) => {
+    const qty = item.quantity ?? item.qty ?? 0;
+    return acc + (item.price || 0) * qty;
+  }, 0);
 
   const handleRemove = async (item) => {
     setError("");
+
     const productId = item.productId || item.styleNo;
+
     if (!productId) {
       setError("Missing product id. Please refresh and try again.");
       return;
     }
 
     const key = `${productId}|${item.color || ""}|${item.size || ""}`;
+
     try {
       setRemovingKey(key);
-      await removeFromPO({ productId, color: item.color, size: item.size });
+      await removeFromPO({
+        productId,
+        color: item.color,
+        size: item.size,
+      });
     } catch (err) {
       console.error(err);
       setError(err.message || "Failed to remove item");
@@ -53,7 +64,11 @@ function PurchaseOrder() {
 
   return (
     <div className="purchase-order-page">
-      <div className="business-log-purchase"><img src="/images/logo.png" alt="Company Logo" /></div>
+
+      <div className="business-log-purchase">
+        <img src="/images/logo.png" alt="Company Logo" />
+      </div>
+
       <h1 className="po-title">Purchase Order</h1>
 
       {error && <p className="po-error">{error}</p>}
@@ -71,51 +86,62 @@ function PurchaseOrder() {
               <th></th>
             </tr>
           </thead>
+
           <tbody>
             {poItems.map((item, idx) => {
-              const itemKey = `${(item.productId || item.styleNo || idx)}|${item.color || ""}|${item.size || ""}`;
+              const qty = item.quantity ?? item.qty ?? 0;
+
+              const itemKey = `${item.productId || item.styleNo || idx}|${item.color || ""}|${item.size || ""}`;
               const isRemoving = removingKey === itemKey;
+
               return (
-              <tr key={idx}>
-                <td>{item.name}</td>
-                <td>{item.color || "-"}</td>
-                <td>{item.size || "-"}</td>
-                <td>{item.quantity ?? item.qty}</td>
-                <td>${(item.price || 0).toFixed(2)}</td>
-                <td>${((item.price || 0) * (item.quantity || item.qty || 0)).toFixed(2)}</td>
-                <td>
-                  <button
-                    className="po-remove-btn"
-                    onClick={() => handleRemove(item)}
-                    disabled={isRemoving}
-                  >
-                    {isRemoving ? "Removing..." : "Remove"}
-                  </button>
-                </td>
-              </tr>
-            )})}
+                <tr key={itemKey}>
+                  <td>{item.name}</td>
+                  <td>{item.color || "-"}</td>
+                  <td>{item.size || "-"}</td>
+                  <td>{qty}</td>
+                  <td>${(item.price || 0).toFixed(2)}</td>
+                  <td>${((item.price || 0) * qty).toFixed(2)}</td>
+
+                  <td>
+                    <button
+                      className="po-remove-btn"
+                      onClick={() => handleRemove(item)}
+                      disabled={isRemoving}
+                    >
+                      {isRemoving ? "Removing..." : "Remove"}
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
+
         </table>
       </div>
 
-      <h2 className="po-total">Total: ${totalAmount.toFixed(2)}</h2>
+      <h2 className="po-total">
+        Total: ${totalAmount.toFixed(2)}
+      </h2>
 
       <div className="po-actions">
-      <button
-        className="confirm-order-btn"
-        onClick={() => navigate("/purchase-order/form")}
-      >
-        Confirm Order & Checkout
-      </button>
+        <button
+          className="confirm-order-btn"
+          disabled={!poItems.length}
+          onClick={() => navigate("/purchase-order/form")}
+        >
+          Confirm Order & Checkout
+        </button>
 
-      <a
-        href="mailto:ritika@novainternationaldesigns.com?subject=Need%20Help%20with%20Purchase%20Order"
-        className="po-help-link"
-      >
-        Need Help?
-      </a>
+        <a
+          href="mailto:ritika@novainternationaldesigns.com?subject=Need%20Help%20with%20Purchase%20Order"
+          className="po-help-link"
+        >
+          Need Help?
+        </a>
       </div>
-      </div>
+
+    </div>
   );
 }
 

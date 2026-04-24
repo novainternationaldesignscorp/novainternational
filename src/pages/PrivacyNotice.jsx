@@ -49,7 +49,7 @@ const PrivacyNotice = () => {
       <h3>1.2 Payment Information</h3>
 
       <p>
-        Payments are processed securely by Stripe. We do not store or access your
+        Payments are processed securely by Square. We do not store or access your
         full card details on our servers.
       </p>
 
@@ -97,7 +97,7 @@ const PrivacyNotice = () => {
       </p>
 
       <ul>
-        <li>Stripe — payment processing</li>
+        <li>Square — payment processing</li>
         <li>Cloudinary — secure image hosting for product photos</li>
         <li>MongoDB Atlas — encrypted cloud database hosting</li>
         <li>Hosting and infrastructure providers — for Site operation</li>
@@ -148,7 +148,7 @@ const PrivacyNotice = () => {
         <li>Encrypted password storage using bcrypt</li>
         <li>Secure session management</li>
         <li>Regular security assessments and vulnerability checks</li>
-        <li>PCI-compliant payment processing handled entirely by Stripe</li>
+        <li>PCI-compliant payment processing handled entirely by Square</li>
       </ul>
 
       <p>

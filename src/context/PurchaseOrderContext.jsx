@@ -41,8 +41,10 @@ export const PurchaseOrderProvider = ({ children }) => {
       // Load from server if we have owner info
       if (ownerType && ownerId) {
         try {
+          const isProd = !window.location.hostname.includes('localhost') &&
+                        !window.location.hostname.includes('127.0.0.1');
           const res = await fetch(`${import.meta.env.VITE_API_URL}/api/purchaseOrderDraft/${ownerType}/${ownerId}`, {
-            credentials: "include",
+            credentials: isProd ? 'include' : 'omit',
           });
           if (res.ok) {
             const data = await res.json();
@@ -92,6 +94,9 @@ export const PurchaseOrderProvider = ({ children }) => {
     // Accept either a productId string or an object { productId, color, size }
     if (!productId) throw new Error("productId is required");
 
+    const isProd = !window.location.hostname.includes('localhost') &&
+                  !window.location.hostname.includes('127.0.0.1');
+
     // Determine ownerType and ownerId
     let ownerType, ownerId;
     if (user && user._id) {
@@ -123,7 +128,7 @@ export const PurchaseOrderProvider = ({ children }) => {
       const res = await fetch(endpoint, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        credentials: isProd ? 'include' : 'omit',
         body: JSON.stringify(body),
       });
 
@@ -146,6 +151,9 @@ export const PurchaseOrderProvider = ({ children }) => {
   const updatePOItemQty = async ({ productId, color = null, size = null, qty }) => {
     if (!productId) throw new Error("productId is required");
 
+    const isProd = !window.location.hostname.includes('localhost') &&
+                  !window.location.hostname.includes('127.0.0.1');
+
     const numericQty = Math.max(1, Number(qty) || 1);
 
     let ownerType, ownerId;
@@ -165,7 +173,7 @@ export const PurchaseOrderProvider = ({ children }) => {
       const res = await fetch(endpoint, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        credentials: isProd ? 'include' : 'omit',
         body: JSON.stringify({ productId, color, size, qty: numericQty }),
       });
 
@@ -195,8 +203,12 @@ export const PurchaseOrderProvider = ({ children }) => {
   };
 
   const clearPO = async () => {
-    // Determine ownerType and ownerId
+    const isProd =
+      !window.location.hostname.includes("localhost") &&
+      !window.location.hostname.includes("127.0.0.1");
+
     let ownerType, ownerId;
+
     if (user && user._id) {
       ownerType = "User";
       ownerId = user._id;
@@ -205,32 +217,23 @@ export const PurchaseOrderProvider = ({ children }) => {
       ownerId = guest._id;
     }
 
-    const endpoint = ownerType && ownerId
-      ? `${import.meta.env.VITE_API_URL}/api/purchaseOrderDraft/${ownerType}/${ownerId}/items`
-      : null;
+    const endpoint =
+      ownerType && ownerId
+        ? `${import.meta.env.VITE_API_URL}/api/purchaseOrderDraft/${ownerType}/${ownerId}/items`
+        : null;
 
     if (endpoint) {
       try {
-        const res = await fetch(endpoint, {
+        await fetch(endpoint, {
           method: "DELETE",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({}),
+          credentials: isProd ? "include" : "omit",
         });
-
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          throw new Error(err.error || err.message || "Failed to clear PO");
-        }
-
-        setPoItems([]);
-        return;
       } catch (err) {
         console.error("Error clearing server PO:", err);
-        // fall through to local clear
       }
     }
 
+    // ALWAYS clear frontend state
     setPoItems([]);
   };
 
@@ -245,6 +248,9 @@ export const PurchaseOrderProvider = ({ children }) => {
     newImage,
   }) => {
     if (!productId) throw new Error("productId is required");
+
+    const isProd = !window.location.hostname.includes('localhost') &&
+                  !window.location.hostname.includes('127.0.0.1');
 
     let ownerType, ownerId;
     if (user && user._id) {
@@ -267,7 +273,7 @@ export const PurchaseOrderProvider = ({ children }) => {
       const res = await fetch(endpoint, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        credentials: isProd ? 'include' : 'omit',
         body: JSON.stringify({
           productId,
           color,

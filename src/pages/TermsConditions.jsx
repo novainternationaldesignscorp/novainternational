@@ -43,7 +43,7 @@ const TermsConditions = () => {
         <ul>
           <li>Online product catalog browsing and search</li>
           <li>Purchase order creation and management</li>
-          <li>Secure payment processing via Stripe</li>
+          <li>Secure payment processing via Square</li>
           <li>Order history and account management</li>
           <li>Order confirmation and shipping notifications</li>
         </ul>
@@ -75,7 +75,7 @@ const TermsConditions = () => {
 
         <h4>5.1 Payment Processing</h4>
         <p>
-          All payments are processed securely through Stripe, a third-party payment processor. By providing payment information, you agree to Stripe's Terms and Conditions of service. We do not store credit card information on our servers.
+          All payments are processed securely through Square, a third-party payment processor. By providing payment information, you agree to Square's Terms and Conditions of service. We do not store credit card information on our servers.
         </p>
 
         <h4>5.2 Accepted Payment Methods</h4>
