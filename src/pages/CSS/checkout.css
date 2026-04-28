@@ -94,6 +94,12 @@
   padding: 10px;
 }
 
+.po-left select {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
 /* ===================== MOBILE ===================== */
 
 @media (max-width: 768px) {
