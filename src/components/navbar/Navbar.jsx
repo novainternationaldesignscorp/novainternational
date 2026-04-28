@@ -234,7 +234,7 @@ const Navbar = () => {
                 <li>Welcome, {user.name || user.email}</li>
                 <li><SignOutButton onSignOut={signOut} /></li>
                 <li>
-                  <Link to="/purchase-order/form">
+                  <Link to="/checkout">
                     <span className="cart-count">{poItems?.length || 0}</span>
                   </Link>
                 </li>

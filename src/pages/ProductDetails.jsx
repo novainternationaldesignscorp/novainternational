@@ -271,7 +271,7 @@ function ProductDetails() {
 
   const handleAddToPO = async () => {
     if (!user && !guest) {
-      alert("Please log in or proceed as guest");
+      // alert("Please log in or proceed as guest");
       navigate("/signin");
       return;
     }
@@ -479,7 +479,7 @@ function ProductDetails() {
 
         {showAddedBar && (
           <div className="action-buttons">
-            <button onClick={() => navigate("/purchase-order/form")}>
+            <button onClick={() => navigate("/checkout")}>
               View Purchase Order
             </button>
             <button onClick={() => navigate("/")}>Continue Shopping</button>

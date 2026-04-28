@@ -89,6 +89,11 @@
   margin-top: 10px;
 }
 
+.po-left input {
+  width: 100%;
+  padding: 10px;
+}
+
 /* ===================== MOBILE ===================== */
 
 @media (max-width: 768px) {

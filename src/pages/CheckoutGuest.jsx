@@ -58,7 +58,7 @@ const CheckoutGuest = () => {
       clearPO();
 
       // ✅ Go shopping → then Checkout.jsx handles Square
-      navigate("/category/fashion/women");
+      navigate("/checkout");
 
     } catch (err) {
       console.error("Guest checkout error:", err);
@@ -103,16 +103,16 @@ const CheckoutGuest = () => {
             {error && <p className="po-form-error">{error}</p>}
 
             <button type="submit" disabled={loading}>
-              {loading ? "Proceeding..." : "Continue to Shop"}
+              {loading ? "Proceeding..." : "Continue to Checkout"}
             </button>
 
-            <button
+            {/* <button
               type="button"
               onClick={handleClearGuest}
               style={{ marginTop: "10px", background: "#555" }}
             >
               Cancel Guest Checkout
-            </button>
+            </button> */}
 
           </form>
         </div>

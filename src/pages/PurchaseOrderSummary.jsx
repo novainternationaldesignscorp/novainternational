@@ -13,7 +13,7 @@ function PurchaseOrderSummary() {
 
   useEffect(() => {
     if (!user && !guest) {
-      alert("Please log in or proceed as guest");
+      // alert("Please log in or proceed as guest");
       navigate("/signin");
       return;
     }
