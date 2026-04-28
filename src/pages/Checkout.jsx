@@ -483,6 +483,26 @@ export default function Checkout() {
 
         <div className="po-right">
           <h3>Summary</h3>
+          <div className="po-summary-items">
+            {orderData.map((item, index) => (
+              <div key={index} className="po-summary-item">
+                
+                <img
+                  src={item.image || item.images?.[0] || "/images/placeholder.png"}
+                  alt={item.name}
+                  className="po-summary-img"
+                />
+
+                <div className="po-summary-details">
+                  <p><strong>{item.name}</strong></p>
+                  <p>Size: {item.size || "N/A"}</p>
+                  <p>Color: {item.color || "N/A"}</p>
+                  <p>Qty: {getQty(item)}</p>
+                  <p>${(getQty(item) * getPrice(item)).toFixed(2)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
 
           <p>Subtotal: ${subtotal.toFixed(2)}</p>
           <p>Tax: ${tax.toFixed(2)}</p>
