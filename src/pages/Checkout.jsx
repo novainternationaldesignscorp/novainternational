@@ -283,10 +283,7 @@ useEffect(() => {
 
       const payments = window.Square.payments(appId, locationId);
       const card = await payments.card();
-
-      const container = document.getElementById("card-container");
-      if (container) container.innerHTML = "";
-
+    
       const container = document.querySelector("#card-container");
 
       if (!container) {
