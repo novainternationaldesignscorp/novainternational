@@ -27,10 +27,18 @@ const loadSquareScript = () =>
   new Promise((resolve, reject) => {
     if (window.Square) return resolve();
 
+    const isProduction =
+      import.meta.env.VITE_SQUARE_ENVIRONMENT === "production";
+
     const script = document.createElement("script");
-    script.src = "https://sandbox.web.squarecdn.com/v1/square.js";
+
+    script.src = isProduction
+      ? "https://web.squarecdn.com/v1/square.js"
+      : "https://sandbox.web.squarecdn.com/v1/square.js";
+
     script.onload = resolve;
     script.onerror = reject;
+
     document.head.appendChild(script);
   });
 
@@ -66,6 +74,7 @@ export default function Checkout() {
     }
   }, [user, guest, loading, poItems]);
 
+  
   // ---------------- LOAD DATA ----------------
   useEffect(() => {
     setOrderData(
@@ -251,47 +260,47 @@ export default function Checkout() {
   const processingFee = subtotal * PROCESSING_FEE_RATE;
   const total = subtotal + tax + processingFee;
 
-  // ---------------- SQUARE INIT ----------------
-  useEffect(() => {
-    const initSquare = async () => {
-      try {
-        if (squareLoaded.current) return;
+// ---------------- SQUARE INIT ----------------
+useEffect(() => {
+  const initSquare = async () => {
+    try {
+      if (squareLoaded.current) return;
 
-        const appId = import.meta.env.VITE_SQUARE_APPLICATION_ID;
-        const locationId = import.meta.env.VITE_SQUARE_LOCATION_ID;
+      const appId = import.meta.env.VITE_SQUARE_APPLICATION_ID;
+      const locationId = import.meta.env.VITE_SQUARE_LOCATION_ID;
 
-        if (!appId || !locationId) {
-          throw new Error("Missing Square env variables");
-        }
-
-        await loadSquareScript();
-
-        let retries = 10;
-        while (!window.Square && retries > 0) {
-          await new Promise((r) => setTimeout(r, 300));
-          retries--;
-        }
-
-        const payments = window.Square.payments(appId, locationId);
-        const card = await payments.card();
-
-        const container = document.getElementById("card-container");
-        if (container) container.innerHTML = "";
-
-        await card.attach("#card-container");
-
-        cardRef.current = card;
-        squareLoaded.current = true;
-        isSquareReady.current = true;
-      } catch (err) {
-        console.error(err);
-        setError("Payment system not ready");
-        isSquareReady.current = false;
+      if (!appId || !locationId) {
+        throw new Error("Missing Square env variables");
       }
-    };
 
-    initSquare();
-  }, []);
+      await loadSquareScript();
+
+      let retries = 10;
+      while (!window.Square && retries > 0) {
+        await new Promise((r) => setTimeout(r, 300));
+        retries--;
+      }
+
+      const payments = window.Square.payments(appId, locationId);
+      const card = await payments.card();
+
+      const container = document.getElementById("card-container");
+      if (container) container.innerHTML = "";
+
+      await card.attach("#card-container");
+
+      cardRef.current = card;
+      squareLoaded.current = true;
+      isSquareReady.current = true;
+    } catch (err) {
+      console.error(err);
+      setError("Payment system not ready");
+      isSquareReady.current = false;
+    }
+  };
+
+  initSquare();
+}, []);
 
   // ---------------- PAYMENT ----------------
   const handlePayment = async () => {
