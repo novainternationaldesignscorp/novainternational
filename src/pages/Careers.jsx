@@ -6,7 +6,7 @@ const Careers = () => {
     <div className="careers-page">
 
       {/* Job Opening 1 */}
-      <div className="job-page">      
+      {/* <div className="job-page">      
         <header className="job-header">
           <h1>Nova International Designs Corporation</h1>
           <h2>Print Media Model Walk-In Interviews</h2>
@@ -59,9 +59,9 @@ const Careers = () => {
           </p>
           <button className="careers-apply-btn"><a href="mailto:ritika@novainternationaldesigns.com">Apply Now</a></button>
         </section>
-      </div>
+      </div> */}
 
-      <hr />
+      {/* <hr /> */}
 
       {/* Job Opening 2 */}
       <div className="job-page">
