@@ -293,7 +293,7 @@ useEffect(() => {
         throw new Error("Card container not found in DOM");
       }
 
-      await card.attach(container);
+      container.innerHTML = "";
 
       cardRef.current = card;
       squareLoaded.current = true;
