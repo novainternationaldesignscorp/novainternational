@@ -260,7 +260,6 @@ export default function Checkout() {
   const processingFee = subtotal * PROCESSING_FEE_RATE;
   const total = subtotal + tax + processingFee;
 
-// ---------------- SQUARE INIT ----------------
 useEffect(() => {
   const initSquare = async () => {
     try {
@@ -281,9 +280,13 @@ useEffect(() => {
         retries--;
       }
 
+      if (!window.Square) {
+        throw new Error("Square failed to load");
+      }
+
       const payments = window.Square.payments(appId, locationId);
       const card = await payments.card();
-    
+
       const container = document.querySelector("#card-container");
 
       if (!container) {
@@ -292,9 +295,12 @@ useEffect(() => {
 
       container.innerHTML = "";
 
+      await card.attach("#card-container");
+
       cardRef.current = card;
       squareLoaded.current = true;
       isSquareReady.current = true;
+
     } catch (err) {
       console.error(err);
       setError("Payment system not ready");
