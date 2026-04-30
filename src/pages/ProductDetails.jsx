@@ -457,22 +457,22 @@ function ProductDetails() {
           </div>
         )}
 
-        {/* temporary disable Add to PO button until we finalize the order item structure and flow */}
-        {/* <div className="action-buttons">
+       
+        <div className="action-buttons">
           {!showAddedBar && (
             <button className="add-po-btn" onClick={handleAddToPO}>
               Add to Purchase Order
             </button>
           )}
-        </div> */}
+        </div>
 
-         <div className="action-buttons">
+         {/* <div className="action-buttons">
           {!showAddedBar && (
             <button className="add-po-btn">
               Add to Purchase Order
             </button>
           )}
-        </div>
+        </div> */}
 
         {showAddedBar && (
           <div className="action-buttons">
