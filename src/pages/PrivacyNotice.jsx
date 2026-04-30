@@ -202,14 +202,6 @@ const PrivacyNotice = () => {
         individuals under the age of 18.
       </p>
 
-      <h2>9. Changes to This Notice</h2>
-
-      <p>
-        We may update this Privacy Notice from time to time. Updates take
-        effect immediately upon posting. Continued use of
-        <strong> www.novainternationaldesigns.com</strong> after changes
-        constitutes acceptance of the revised Privacy Notice.
-      </p>
 
         <p>Email - info@novainternationaldesigns.com</p>
         <p>www.novainternationaldesigns.com</p>

@@ -54,7 +54,7 @@ const About = () => {
         </div>
       </div>
 
-      <div className="team-member">
+      {/* <div className="team-member">
         <img src="images/Kmohana-photo.jpg" alt="Krishna Mohana" className="team-photo" />
         <div className="team-info">
           <p><strong>Name:</strong> Krishna Mohana</p>
@@ -66,7 +66,7 @@ const About = () => {
             </a>
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -88,14 +88,7 @@ const LegalNotice = () => {
         Any disputes shall be resolved exclusively in the state or federal
         courts located in Illinois.
       </p>
-
-      <h2>5. Changes to This Notice</h2>
-
-      <p>
-        Nova International Designs Corporation may update or modify this
-        Legal Notice at any time. Changes take effect immediately upon posting.
-        Continued use of the Site constitutes acceptance of the revised terms.
-      </p>
+   
 
         <p>Email - info@novainternationaldesigns.com</p>
         <p>www.novainternationaldesigns.com</p>

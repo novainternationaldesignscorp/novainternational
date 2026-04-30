@@ -108,14 +108,9 @@ const TermsConditions = () => {
         <h4>8.2 Dispute Resolution</h4>
         <p>Any disputes arising from these Terms and Conditions or your use of the Website shall first be attempted to be resolved through good faith negotiation. If unresolved, our legal department will comply with the legal laws as mentioned by the State of Illinois.</p>
       </section>
-
+  
       <section>
-        <h3>9. Changes to Terms and Conditions</h3>
-        <p>Nova International Designs Corporation reserves the right to modify these Terms and Conditions at any time. Changes will be posted on the Website with an updated effective date. Continued use of the Website after changes constitutes acceptance of the revised Terms and Conditions.</p>
-      </section>
-
-      <section>
-        <h3>10. Contact Information</h3>
+        <h3>Contact Information</h3>
         <p>For questions regarding these Terms and Conditions, please contact us:</p>
         <p>Nova International Designs Corporation.</p>
         <p>Email: info@novainternationaldesigns.com</p>
