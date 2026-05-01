@@ -76,7 +76,7 @@ const CheckoutGuest = () => {
     <h2>Checkout as Guest</h2>
 
     <div className="po-container">
-      <div className="po-left">
+      <div className="po-left-guest">
         <form onSubmit={handleGuestCheckout}>
           <input
             id="guest-full-name"
@@ -101,16 +101,16 @@ const CheckoutGuest = () => {
           {error && <p className="po-form-error">{error}</p>}
           <br />
           <button type="submit" disabled={loading}>
-            {loading ? "Proceeding..." : "Proceed as Guest"}
+            {loading ? "Proceeding..." : "Continue to checkout"}
           </button>
        
-          <button
+          {/* <button
             type="button"
             onClick={handleClearGuest}
             style={{ marginTop: "10px", background: "#555" }}
           >
             Cancel Guest Checkout
-          </button>
+          </button> */}
         </form>
       </div>
     </div>
