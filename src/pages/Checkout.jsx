@@ -258,7 +258,17 @@ const Checkout = () => {
 
     if (!validateFields()) return;
 
-    setSubmitting(true);
+  try {
+    const payload = {
+      items: orderData,
+      shippingInfo,
+      subtotal,
+      estimatedTax: tax,
+      totalAmount: total,
+      form: { email: shippingInfo.email },
+      ownerId: String(user?._id || guest?._id),
+      ownerType: user ? "User" : "Guest",
+    };
 
     try {
       const sessionRes = await fetch(
@@ -519,6 +529,7 @@ const Checkout = () => {
             {submitting ? "Redirecting..." : "Confirm Purchase Order"}
           </button>
         </div>
+
       </div>
     </div>
   );

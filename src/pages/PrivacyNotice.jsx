@@ -202,7 +202,6 @@ const PrivacyNotice = () => {
         individuals under the age of 18.
       </p>
 
-
         <p>Email - info@novainternationaldesigns.com</p>
         <p>www.novainternationaldesigns.com</p>
 
