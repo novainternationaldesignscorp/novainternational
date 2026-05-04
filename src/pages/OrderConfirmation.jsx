@@ -64,6 +64,9 @@ export default function OrderConfirmation() {
         if (!data) throw new Error("Order data is empty.");
 
         setOrder(data);
+
+        // Clear only cart/draft data; keep user/guest authenticated.
+        clearPO();
       } catch (err) {
         console.error("Fetch order error:", err);
         setError(err.message || "Failed to fetch order.");
@@ -74,21 +77,6 @@ export default function OrderConfirmation() {
 
     fetchOrder();
   }, [sessionId, import.meta.env.VITE_API_URL, clearPO]);
-
-  // ✅ FIXED: cart clearing moved OUTSIDE fetchOrder (correct React pattern)
-  useEffect(() => {
-    if (!order) return;
-
-    const clearCartAfterOrder = async () => {
-      try {
-        await clearPO();
-      } catch (err) {
-        console.error("Failed to clear cart:", err);
-      }
-    };
-
-    clearCartAfterOrder();
-  }, [order, clearPO]);
 
   useEffect(() => {
     if (loading || error || !order) return undefined;
