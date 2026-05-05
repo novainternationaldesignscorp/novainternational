@@ -242,3 +242,44 @@
     width: 100%;
   }
 }
+
+@media (max-width: 768px) {
+
+  .po-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  /* Hide table header */
+  .po-table thead {
+    display: none;
+  }
+
+  /* Turn rows into cards */
+  .po-table tr {
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+  }
+
+  /* Stack each cell */
+  .po-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border: none;
+    font-size: 14px;
+  }
+
+  /* Add labels using data-label */
+  .po-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #555;
+  }
+
+}
