@@ -177,16 +177,50 @@ export default function Checkout() {
   });
 
   const validateShipping = () => {
-    if (!shippingInfo.firstName.trim()) return "First Name is required";
-    if (!shippingInfo.lastName.trim()) return "Last Name is required";
-    if (!shippingInfo.email.trim()) return "Email is required";
-    if (!shippingInfo.phone.trim()) return "Phone is required";
-    if (!shippingInfo.address.trim()) return "Address is required";
-    if (!shippingInfo.city.trim()) return "City is required";
-    if (!shippingInfo.zip.trim()) return "ZIP is required";
-    if (!shippingInfo.country.trim()) return "Country is required";
-    return null;
-  };
+  // First Name (letters only)
+  if (!shippingInfo.firstName.trim()) return "First Name is required";
+  if (!/^[A-Za-z]+$/.test(shippingInfo.firstName.trim())) {
+    return "First Name must contain only letters";
+  }
+
+  // Last Name (letters only)
+  if (!shippingInfo.lastName.trim()) return "Last Name is required";
+  if (!/^[A-Za-z]+$/.test(shippingInfo.lastName.trim())) {
+    return "Last Name must contain only letters";
+  }
+
+  // Email
+  if (!shippingInfo.email.trim()) return "Email is required";
+  if (!/\S+@\S+\.\S+/.test(shippingInfo.email)) {
+    return "Invalid email address";
+  }
+
+  // Phone (exactly 10 digits, numbers only)
+  if (!shippingInfo.phone.trim()) return "Phone is required";
+  if (!/^\d{10,}$/.test(shippingInfo.phone)) {
+    return "Phone must be at least 10 digits";
+  }
+
+  // Address
+  if (!shippingInfo.address.trim()) return "Address is required";
+
+  // City (letters + spaces allowed)
+  if (!shippingInfo.city.trim()) return "City is required";
+  if (!/^[A-Za-z\s]+$/.test(shippingInfo.city.trim())) {
+    return "City must contain only letters";
+  }
+
+  // ZIP (exactly 5 digits)
+  if (!shippingInfo.zip.trim()) return "ZIP is required";
+  if (!/^\d{5,}$/.test(shippingInfo.zip)) {
+    return "ZIP must be minimum 5 digits";
+  }
+
+  // Country
+  if (!shippingInfo.country.trim()) return "Country is required";
+
+  return null;
+};
 
   useEffect(() => {
     setShippingInfo((prev) => ({
@@ -356,7 +390,7 @@ export default function Checkout() {
             value={shippingInfo.zip}
             onChange={(e) => setShippingInfo({ ...shippingInfo, zip: e.target.value })} />
 
-          <select
+          <select className="checkout-country-select"
             value={shippingInfo.country}
             onChange={(e) =>
               setShippingInfo({ ...shippingInfo, country: e.target.value })
@@ -400,7 +434,7 @@ export default function Checkout() {
 
           {error && <p style={{ color: "red" }}>{error}</p>}
 
-          <button onClick={handlePayment} disabled={submitting}>
+          <button className="checkout-submit-btn" onClick={handlePayment} disabled={submitting}>
             {submitting ? "Redirecting..." : "Submit Purchase Order"}
           </button>
         </div>
